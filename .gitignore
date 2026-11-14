@@ -1,0 +1,5 @@
+# raw research scrapes (not part of the site)
+.research/
+# OS / editor noise
+.DS_Store
+*.log

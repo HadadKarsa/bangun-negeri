@@ -1,0 +1,130 @@
+<section id="live">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Data live</h2>
+        <p>Angka yang berubah cepat: kurs, dan konteks global. Ditarik real-time dari sumber terbuka.</p>
+      </div>
+
+      <div class="ticker" aria-label="Ringkasan cepat">
+        <span class="live-dot" aria-hidden="true"></span>
+        <div class="track" id="tickerTrack">
+          <span>Memuat ringkasan…</span>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:16px">
+        <article class="card live">
+          <div class="label">Kurs USD → IDR</div>
+          <div class="value" id="fxValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag ok" id="fxTag">live</span> <span id="fxTime">—</span></div>
+        </article>
+        <article class="card live">
+          <div class="label">Kurs IDR → USD</div>
+          <div class="value small" id="fxInvValue"><span class="skeleton">memuat</span></div>
+          <div class="meta">1 rupiah dalam dolar AS</div>
+        </article>
+        <article class="card live">
+          <div class="label">PDB (nominal)</div>
+          <div class="value small" id="gdpValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn" id="gdpTag">tahunan</span> <span id="gdpYear">—</span></div>
+        </article>
+        <article class="card live">
+          <div class="label">Inflasi (CPI, YoY)</div>
+          <div class="value" id="infValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn" id="infTag">tahunan</span> <span id="infYear">—</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+<section id="struktur">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Indikator struktural</h2>
+        <p>Gambaran jangka panjang: penduduk, tenaga kerja, kemiskinan, dan struktur ekonomi.</p>
+      </div>
+      <div class="grid" id="structGrid">
+        <article class="card">
+          <div class="label">Populasi</div>
+          <div class="value" id="popValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn">tahunan</span> <span id="popYear">—</span></div>
+        </article>
+        <article class="card">
+          <div class="label">Pengangguran</div>
+          <div class="value" id="unempValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn">tahunan</span> <span id="unempYear">—</span></div>
+        </article>
+        <article class="card">
+          <div class="label">Kemiskinan nasional</div>
+          <div class="value" id="povValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn">tahunan</span> <span id="povYear">—</span></div>
+        </article>
+        <article class="card">
+          <div class="label">Manufaktur / PDB</div>
+          <div class="value" id="manValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn">tahunan</span> <span id="manYear">—</span></div>
+        </article>
+        <article class="card">
+          <div class="label">Ekspor / PDB</div>
+          <div class="value" id="expValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn">tahunan</span> <span id="expYear">—</span></div>
+        </article>
+        <article class="card">
+          <div class="label">Investasi asing langsung</div>
+          <div class="value small" id="fdiValue"><span class="skeleton">memuat</span></div>
+          <div class="meta"><span class="tag warn">tahunan</span> <span id="fdiYear">—</span></div>
+        </article>
+      </div>
+      <div class="note">
+        <strong>Catatan:</strong> indikator tahunan berasal dari World Bank Open Data, yang
+        mempublikasikan angka dengan jeda beberapa bulan setelah tahun berjalan. Angka terbaru
+        yang tersedia ditampilkan beserta tahunnya — bukan proyeksi. Data tahunan memang tertinggal sekitar satu tahun dari tahun berjalan:
+        itu jeda publikasi World Bank, bukan angka basi. Tiap kartu menandai tahun datanya,
+        dan nilai tukar diperbarui tiap hari — label umur di bawah menunjukkan kapan terakhir
+        angka itu benar-benar bergerak.
+      </div>
+    </div>
+  </section>
+<section id="tabel">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Tabel ringkas</h2>
+        <p>Semua indikator dalam satu tampilan, lengkap dengan sumber dan tahun data.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only" style="position:absolute;left:-9999px">Ringkasan indikator ekonomi Indonesia</caption>
+          <thead>
+            <tr><th scope="col">Indikator</th><th scope="col">Nilai</th><th scope="col">Tahun</th><th scope="col">Sumber</th></tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="4">Memuat data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+<section id="sumber">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Sumber &amp; metodologi</h2>
+        <p>Semua data di halaman ini berasal dari API publik yang bisa diakses tanpa kunci API.</p>
+      </div>
+      <div class="src-grid">
+        <div class="src-card">
+          <h3>World Bank Open Data</h3>
+          <p>PDB, populasi, inflasi, pengangguran, kemiskinan, ekspor, FDI, manufaktur.</p>
+          <a href="https://api.worldbank.org/v2/country/IDN?format=json" target="_blank" rel="noopener">api.worldbank.org</a>
+        </div>
+        <div class="src-card">
+          <h3>ExchangeRate-API (open access)</h3>
+          <p>Kurs USD/IDR harian, diperbarui sekali sehari.</p>
+          <a href="https://open.er-api.com/v6/latest/USD" target="_blank" rel="noopener">open.er-api.com</a>
+        </div>
+        <div class="src-card">
+          <h3>Cara pengambilan</h3>
+          <p>Halaman ini mengambil data langsung dari browser Anda. Tidak ada server perantara yang menyimpan data.</p>
+          <a href="#live">Lihat status live</a>
+        </div>
+      </div>
+    </div>
+  </section>

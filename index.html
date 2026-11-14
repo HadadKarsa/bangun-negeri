@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bangun Negeri — Data Indonesia</title>
+<meta name="description" content="Data Indonesia dalam satu halaman: statistik nasional, alam dan keanekaragaman hayati, serta kebakaran hutan dan lahan 2026.">
+<link rel="stylesheet" href="theme.css">
+<style>
+/* Alam Indonesia section: scoped rules */
+#alam .alam-note { margin-top: 1.25rem; }
+    #alam h3 { margin: 2rem 0 .35rem; font-size: clamp(1.05rem, 1.6vw, 1.3rem); }
+    #alam .alam-tag { display: inline-block; font-size: .72rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--ink-muted, #6b6259); margin-bottom: .6rem; }
+    #alam .caveat { margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div class="brand">Bangun Negeri <span class="ver">v1.0</span></div>
+    <nav class="tabs">
+      <a href="#intro">Ringkasan</a>
+      <a href="#alam">Alam Indonesia</a>
+      <a href="#udara">Karhutla 2026</a>
+      <a href="#tabel">Data</a>
+      <a href="#sumber">Sumber</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap"><section id="intro" class="sec">
+  <h1>Bangun Negeri</h1>
+  <p class="sub">Satu halaman untuk membaca Indonesia lewat angka: kondisi ekonomi dan sosial, alam dan keanekaragaman hayati, serta kebakaran hutan dan lahan 2026. Setiap angka membawa tahun dan sumbernya.</p>
+</section>
+<section id="live">
+    <div class="wrap">
+      <div class="sec">
+        <h2>Data live</h2>
+        <p>Angka yang berubah cepat: kurs, dan konteks global. Ditarik real-time dari sumber terbuka.</p>
+      </div>
+
+      <div class="" aria-label="Ringkasan cepat">
+        <span class="pulse" aria-hidden="true"></span>
+        <div class="bar-track" id="tickerTrack">
+          <span>Memuat ringkasan…</span>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:16px">
+        <article class="panel live-badge">
+          <div class="stat-label">Kurs USD → IDR</div>
+          <div class="stat-num" id="fxValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="ok" id="fxTag">live</span> <span id="fxTime">—</span></div>
+        </article>
+        <article class="panel live-badge">
+          <div class="stat-label">Kurs IDR → USD</div>
+          <div class="stat-num sub" id="fxInvValue"><span class="">memuat</span></div>
+          <div class="src-note">1 rupiah dalam dolar AS</div>
+        </article>
+        <article class="panel live-badge">
+          <div class="stat-label">PDB (nominal)</div>
+          <div class="stat-num sub" id="gdpValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn" id="gdpTag">tahunan</span> <span id="gdpYear">—</span></div>
+        </article>
+        <article class="panel live-badge">
+          <div class="stat-label">Inflasi (CPI, YoY)</div>
+          <div class="stat-num" id="infValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn" id="infTag">tahunan</span> <span id="infYear">—</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+<section id="struktur">
+    <div class="wrap">
+      <div class="sec">
+        <h2>Indikator struktural</h2>
+        <p>Gambaran jangka panjang: penduduk, tenaga kerja, kemiskinan, dan struktur ekonomi.</p>
+      </div>
+      <div class="grid2" id="structGrid">
+        <article class="panel">
+          <div class="stat-label">Populasi</div>
+          <div class="stat-num" id="popValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn">tahunan</span> <span id="popYear">—</span></div>
+        </article>
+        <article class="panel">
+          <div class="stat-label">Pengangguran</div>
+          <div class="stat-num" id="unempValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn">tahunan</span> <span id="unempYear">—</span></div>
+        </article>
+        <article class="panel">
+          <div class="stat-label">Kemiskinan nasional</div>
+          <div class="stat-num" id="povValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn">tahunan</span> <span id="povYear">—</span></div>
+        </article>
+        <article class="panel">
+          <div class="stat-label">Manufaktur / PDB</div>
+          <div class="stat-num" id="manValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn">tahunan</span> <span id="manYear">—</span></div>
+        </article>
+        <article class="panel">
+          <div class="stat-label">Ekspor / PDB</div>
+          <div class="stat-num" id="expValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn">tahunan</span> <span id="expYear">—</span></div>
+        </article>
+        <article class="panel">
+          <div class="stat-label">Investasi asing langsung</div>
+          <div class="stat-num sub" id="fdiValue"><span class="">memuat</span></div>
+          <div class="src-note"><span class="warn">tahunan</span> <span id="fdiYear">—</span></div>
+        </article>
+      </div>
+      <div class="caveat">
+        <strong>Catatan:</strong> indikator tahunan berasal dari World Bank Open Data, yang
+        mempublikasikan angka dengan jeda beberapa bulan setelah tahun berjalan. Angka terbaru
+        yang tersedia ditampilkan beserta tahunnya — bukan proyeksi. Data tahunan memang tertinggal sekitar satu tahun dari tahun berjalan:
+        itu jeda publikasi World Bank, bukan angka basi. Tiap kartu menandai tahun datanya,
+        dan nilai tukar diperbarui tiap hari — label umur di bawah menunjukkan kapan terakhir
+        angka itu benar-benar bergerak.
+      </div>
+    </div>
+  </section>
+<section id="alam" class="sec">
+  <h2 class="sec">Alam Indonesia</h2>
+  <p class="sub">Hutan, laut, dan gambut yang menopang negara ini — beserta batas daya tampungnya.</p>
+
+  
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num">3,40<span class="stat-unit">juta ha</span></div>
+      <div class="stat-label">Mangrove — terluas di dunia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">57</div>
+      <div class="stat-label">Taman nasional</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">36,1<span class="stat-unit">juta ha</span></div>
+      <div class="stat-label">Total kawasan lindung</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">76<span class="stat-unit">%</span></div>
+      <div class="stat-label">Spesies karang dunia di Coral Triangle</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">170<span class="stat-unit">→ &lt;100</span></div>
+      <div class="stat-label">Tutupan hutan, juta ha (1900 → 2000)</div>
+    </div>
+  </div>
+
+  <h3>Hutan: dari 170 juta hektare ke bawah 100</h3>
+  <p>Pada sekitar tahun 1900 tutupan hutan Indonesia diperkirakan <strong>170 juta hektare</strong>. Pada akhir abad ke-20 angka itu tinggal <strong>di bawah 100 juta hektare</strong>. Deforestasi menguat sejak 1970-an dan terus berlanjut; pada 1950 hutan primer masih sekitar 145 juta ha dengan 14 juta ha hutan sekunder di sekitarnya.</p>
+  <p>Kehilangan hutan primer tahunan sempat turun menjadi sekitar <strong>930.000 hektare pada 2016</strong>, tetapi tekanannya tidak hilang — sekitar <strong>3,3 juta hektare</strong> hutan telah berubah menjadi perkebunan kelapa sawit. Perkebunan, tambang, dan kolam ikan bersama-sama menyumbang sekitar 5% deforestasi nasional; sisanya datang dari pembukaan lahan dan kebakaran.</p>
+
+  <div class="grid2 alam-note">
+    <div class="panel">
+      <span class="alam-tag">Keanekaragaman</span>
+      <p>Indonesia adalah salah satu negara <em>megadiverse</em> dunia. Di Bird's Head Seascape, Papua, tercatat <strong>574 spesies karang</strong> — 95% dari total Coral Triangle dan 72% dari seluruh dunia. Satu lanskap kecil di timur Indonesia memuat hampir tiga perempat spesies karang bumi.</p>
+    </div>
+    <div class="panel">
+      <span class="alam-tag">Kawasan lindung</span>
+      <p>Lebih dari <strong>500 kawasan lindung</strong> mencakup <strong>57 taman nasional</strong> dan sejumlah cagar alam serta suaka margasatwa, totalnya <strong>36,1 juta hektare</strong>. Sembilan taman nasional di antaranya berstatus warisan dunia. Cakupan ini naik dari 10% luas daratan pada era 1980-an.</p>
+    </div>
+  </div>
+
+  <h3>Laut: Coral Triangle dan mangrove terluas di dunia</h3>
+  <p>Coral Triangle — "Amazonnya laut" — membentang <strong>5,7 juta kilometer persegi</strong> perairan dan memuat lebih dari <strong>76% spesies karang pembentuk terumbu</strong> dunia. Padang lamun di kawasan ini menutup sekitar <strong>58.550 km²</strong> dengan 21 spesies lamun.</p>
+  <p>Indonesia juga memegang <strong>mangrove terluas di dunia: 3,40 juta hektare</strong> dari total global 15,9 juta ha (estimasi 2025). Asia menyumbang 6,10 juta ha, dan Indonesia sendiri lebih dari seperlima angka dunia.</p>
+
+  <h3>Gambut: simpanan karbon yang mudah terbakar</h3>
+  <p>Indonesia memiliki lahan gambut tropis <strong>lebih luas dari negara mana pun</strong>. Gambut menyimpan karbon jauh lebih padat daripada hutan di atasnya, tetapi hanya selama tetap basah. Negara ini kehilangan lahan basah sekitar <strong>100.000 hektare per tahun</strong>.</p>
+  <p>Sekali dikeringkan untuk perkebunan atau kanal, gambut berubah dari penyerap menjadi sumber emisi — dan bahan bakar. Inilah simpul yang menghubungkan hutan, kebakaran, dan kabut asap di halaman ini: lahan yang dikeringkan terbakar, dan yang terbakar melepas karbon yang tersimpan berabad-abad.</p>
+
+  <div class="caveat">
+    <strong>Batas data.</strong> Angka tutupan hutan dan deforestasi di atas berasal dari rentang tahun yang lebar dan dari sumber berbeda; definisi "hutan" (kawasan hutan berdasarkan status hukum vs. luas yang benar-benar berhutan) berbeda-beda antarlembaga dan selisihnya bisa puluhan juta hektare. Angka mangrove 3,40 juta ha adalah estimasi 2025, bukan hasil sensus nasional. Jumlah spesies per kelompok taksonomi sengaja tidak dicantumkan karena sumber-sumber resmi saling berbeda dan tidak ada satu angka yang bisa dipertanggungjawabkan; yang ditampilkan hanya angka karang yang punya rujukan jelas. Untuk keputusan apa pun, rujuk ke publikasi KLHK/KLH terbaru, bukan halaman ini.
+    <div class="src-note">Sumber: Wikipedia (Deforestation in Indonesia; Protected areas of Indonesia; Coral Triangle; Mangrove), data turunan KLHK/FAO/ADB. Diakses November 2026.</div>
+  </div>
+</section>
+<section id="udara">
+  <div class="wrap">
+    <span class="live-badge"><span class="pulse" aria-hidden="true"></span>Data live · ditarik saat halaman dibuka</span>
+    <h2 class="sec">Kualitas udara terkini</h2>
+    <p class="sub">PM2.5 adalah partikel halus yang paling berbahaya saat karhutla — ukurannya cukup kecil untuk masuk ke paru-paru dan aliran darah. Angka di bawah berasal dari model atmosfer yang menggabungkan citra satelit dan data permukaan, bukan dari sensor resmi pemerintah.</p>
+
+    <div class="aq-grid" id="aqGrid" role="list" aria-live="polite">
+      <div class="aq-card" role="listitem"><div class="aq-city">Memuat…</div><div class="aq-region">Mengambil data</div></div>
+    </div>
+
+    <p class="caveat"><strong>Baca dengan hati-hati.</strong> Angka PM2.5 yang tinggi di Jakarta hampir selalu berasal dari polusi lalu lintas dan industri, bukan asap karhutla. Yang benar-benar menandai karhutla adalah lonjakan di kota gambut: Palangka Raya, Pekanbaru, Pontianak, Jambi, dan Banjarmasin. Satu angka tinggi tidak membuktikan apa pun tanpa melihat polanya.</p>
+  </div>
+</section>
+<section id="provinsi">
+  <div class="wrap">
+    <h2 class="sec">Provinsi dengan luas terbakar terluas</h2>
+    <p class="sub">Data Sipongi/Kementerian Kehutanan per 20 Agustus 2026. Kalimantan Barat menanggung beban terbesar — hampir dua kali provinsi berikutnya, dan sebagian besar lahannya adalah gambut yang sulit dipadamkan karena api menjalar di bawah permukaan.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Luas terbakar per provinsi, 2026 (hektar)</caption>
+        <thead>
+          <tr><th scope="col">#</th><th scope="col">Provinsi</th><th scope="col">Luas (ha)</th><th scope="col" class="bar-cell">Proporsi</th></tr>
+        </thead>
+        <tbody id="provBody">
+          <tr><td colspan="4">Memuat…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caveat">Sepuluh provinsi ini menyumbang mayoritas luas terbakar nasional, tetapi totalnya <strong>tidak</strong> sama dengan angka nasional: pemerintah sendiri menerbitkan beberapa angka berbeda pada tanggal berbeda (lihat bagian Batas data).</p>
+  </div>
+</section>
+<section id="dampak">
+  <div class="wrap">
+    <h2 class="sec">Dampak yang sudah terukur</h2>
+    <p class="sub">Karhutla bukan cuma soal hektar. Yang paling mahal justru biaya yang tidak masuk anggaran pemadaman: kesehatan, pendidikan yang terhenti, dan penerbangan yang dibatalkan.</p>
+
+    <div class="grid2">
+      <div class="panel alert">
+        <h3>Kesehatan</h3>
+        <p><strong>4 orang meninggal</strong> dan <strong>347 orang terluka</strong> akibat langsung karhutla, menurut Kementerian Kesehatan.</p>
+        <p>Jauh lebih besar lagi beban penyakit pernapasan: lonjakan ISPA di puskesmas daerah terdampak, terutama pada anak dan lansia. Angka pastinya tidak pernah dirilis lengkap.</p>
+      </div>
+      <div class="panel warn">
+        <h3>Ekonomi</h3>
+        <p>CELIOS memperkirakan kerugian <strong>Rp39–123 triliun</strong> untuk Januari–Agustus 2026 — gabungan kerusakan ekonomi dan biaya kesehatan.</p>
+        <p>Rentangnya sangat lebar karena metode valuasi berbeda; angka ini estimasi lembaga independen, bukan angka resmi pemerintah.</p>
+      </div>
+      <div class="panel">
+        <h3>Pendidikan</h3>
+        <p>Ratusan sekolah diliburkan di Sumatera dan Kalimantan saat indeks kualitas udara masuk kategori berbahaya. Setiap hari libur adalah hari belajar yang hilang, dan tidak ada mekanisme penggantian.</p>
+      </div>
+      <div class="panel">
+        <h3>Transportasi</h3>
+        <p>Jarak pandang turun drastis saat asap tebal, memaksa penundaan dan pembatalan penerbangan di bandara terdampak. Ini biaya yang langsung terasa, tapi jarang dihitung sebagai kerugian karhutla.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="kronologi">
+  <div class="wrap">
+    <h2 class="sec">Kronologi</h2>
+    <p class="sub">Bukan bencana yang tiba-tiba. Polanya berulang: kemarau panjang, lahan gambut yang sudah dikeringkan, lalu api yang menyebar di bawah tanah dan bertahan berbulan-bulan.</p>
+    <ul class="tl">
+      <li><time>Januari–Juni 2026</time><p><strong>107.465 hektar terbakar</strong> — naik sekitar 110% dibanding periode yang sama 2023. El Niño sangat kuat memperpanjang musim kering.</p></li>
+      <li><time>Juli–Agustus 2026</time><p>Asap menutup langit Sumatera dan Kalimantan. <strong>18 Agustus</strong>, Menteri Kehutanan Raja Juli Antoni menyebut angka <strong>202 ribu hektar</strong>.</p></li>
+      <li><time>20 Agustus 2026</time><p>Sipongi merilis sebaran provinsi: <strong>Kalimantan Barat 38.310 ha</strong>, disusul Papua Selatan dan NTT.</p></li>
+      <li><time>22 Agustus 2026</time><p>Menteri Lingkungan Hidup Jumhur Hidayat menyebut <strong>~85 ribu hektar</strong> berada di kawasan konsesi, dengan <strong>335 perusahaan</strong> terindikasi memiliki titik api — lalu membantah pernyataannya sendiri beberapa hari kemudian.</p></li>
+      <li><time>September–Oktober 2026</time><p>WALHI merilis analisis: <strong>74% titik panas Kalimantan</strong> berada di lahan konsesi — 10.739 titik di HGU sawit, 7.880 di konsesi tambang, 6.905 di PBPH.</p></li>
+      <li><time>3 November 2026</time><p>Kemenhut mencatat <strong>189 titik panas</strong> nasional. Empat hari kemudian turun menjadi <strong>55 titik</strong>.</p></li>
+    </ul>
+  </div>
+</section>
+<section id="batas">
+  <div class="wrap">
+    <h2 class="sec">Batas data: yang tidak kita ketahui</h2>
+    <p class="sub">Halaman ini sengaja menampilkan bagian ini. Untuk karhutla, angka yang paling sering dikutip justru yang paling tidak sepakat — termasuk oleh pemerintah sendiri.</p>
+
+    <div class="grid2">
+      <div class="panel alert">
+        <h3>Angka nasional tidak satu</h3>
+        <p>107.465 ha (Jan–Jun), 202 ribu ha (Menhut, 18 Agu), dan ~85 ribu ha di konsesi (MenLH, 22 Agu) tidak bisa dijumlahkan atau dibandingkan langsung — cakupan dan metodenya berbeda.</p>
+        <p>Menteri Lingkungan Hidup sempat membantah angka konsesinya sendiri, lalu mengoreksi lagi. Sampai hari ini tidak ada satu angka resmi yang final.</p>
+      </div>
+      <div class="panel warn">
+        <h3>Titik panas ≠ kebakaran</h3>
+        <p>Hotspot adalah anomali suhu yang ditangkap satelit. Satu kebakaran bisa menghasilkan puluhan titik, dan satu titik bisa jadi cerobong asap pabrik. Menghitung titik panas sebagai "jumlah kebakaran" adalah kesalahan yang sering muncul di berita.</p>
+      </div>
+      <div class="panel">
+        <h3>Data hotspot live tidak tersedia</h3>
+        <p>API hotspot satelit NASA (FIRMS) memerlukan kunci registrasi, dan endpoint hotspot BMKG yang publik sudah tidak merespons. Karena itu halaman ini <strong>tidak</strong> menampilkan peta titik panas live — lebih baik tidak ada daripada peta yang datanya karangan.</p>
+      </div>
+      <div class="panel">
+        <h3>Kualitas udara: model, bukan sensor</h3>
+        <p>Angka PM2.5 berasal dari model atmosfer (Open-Meteo, yang mengolah data satelit dan reanalisis cuaca). Di kota tanpa stasiun pemantau resmi, ini adalah perkiraan terbaik yang tersedia gratis — bukan pengukuran di titik itu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="tabel">
+    <div class="wrap">
+      <div class="sec">
+        <h2>Tabel ringkas</h2>
+        <p>Semua indikator dalam satu tampilan, lengkap dengan sumber dan tahun data.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only" style="position:absolute;left:-9999px">Ringkasan indikator ekonomi Indonesia</caption>
+          <thead>
+            <tr><th scope="col">Indikator</th><th scope="col">Nilai</th><th scope="col">Tahun</th><th scope="col">Sumber</th></tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="4">Memuat data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+<section id="sumber">
+    <div class="wrap">
+      <div class="sec">
+        <h2>Sumber &amp; metodologi</h2>
+        <p>Semua data di halaman ini berasal dari API publik yang bisa diakses tanpa kunci API.</p>
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <h3>World Bank Open Data</h3>
+          <p>PDB, populasi, inflasi, pengangguran, kemiskinan, ekspor, FDI, manufaktur.</p>
+          <a href="https://api.worldbank.org/v2/country/IDN?format=json" target="_blank" rel="noopener">api.worldbank.org</a>
+        </div>
+        <div class="panel">
+          <h3>ExchangeRate-API (open access)</h3>
+          <p>Kurs USD/IDR harian, diperbarui sekali sehari.</p>
+          <a href="https://open.er-api.com/v6/latest/USD" target="_blank" rel="noopener">open.er-api.com</a>
+        </div>
+        <div class="panel">
+          <h3>Cara pengambilan</h3>
+          <p>Halaman ini mengambil data langsung dari browser Anda. Tidak ada server perantara yang menyimpan data.</p>
+          <a href="#live">Lihat status live</a>
+        </div>
+      </div>
+    </div>
+  </section></main>
+<footer class="site">
+  <div class="wrap">
+    <p>Bangun Negeri — halaman data terbuka. Angka disertai tahun dan sumbernya; bila sumber resmi berbeda, perbedaan itu ditampilkan, bukan diratakan.</p>
+    <p class="src-note">Data live diambil langsung dari API publik di peramban Anda. Halaman ini tidak menyimpan data pengunjung.</p>
+  </div>
+</footer>
+<script>
+
+(function(){
+  "use strict";
+
+  var WB = "https://api.worldbank.org/v2/country/IDN/indicator/";
+  var FX = "https://open.er-api.com/v6/latest/USD";
+  var TIMEOUT = 12000;
+
+  // Fallback values (verified 2026-11-11) so the page never shows blanks.
+  var FALLBACK = {
+    fx: 18089.5, fxTime: "cache",
+    gdp: 1445642584163.81, gdpYear: 2025,
+    inf: 1.9133, infYear: 2025,
+    pop: 285721236, popYear: 2025,
+    unemp: 3.237, unempYear: 2025,
+    pov: 8.5, povYear: 2025,
+    man: 19.0651, manYear: 2025,
+    exp: 22.8465, expYear: 2025,
+    fdi: 22698158405.27, fdiYear: 2025
+  };
+
+  function $(id){ return document.getElementById(id); }
+
+  function fetchJSON(url){
+    var ctrl = new AbortController();
+    var t = setTimeout(function(){ ctrl.abort(); }, TIMEOUT);
+    return fetch(url, {signal: ctrl.signal, cache: "no-store"})
+      .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .finally(function(){ clearTimeout(t); });
+  }
+
+  function wbLatest(indicator){
+    return fetchJSON(WB + indicator + "?format=json&per_page=10")
+      .then(function(d){
+        if(!Array.isArray(d) || !Array.isArray(d[1])) throw new Error("bad payload");
+        for(var i=0;i<d[1].length;i++){
+          if(d[1][i] && d[1][i].value !== null) return {value: d[1][i].value, year: parseInt(d[1][i].date,10)};
+        }
+        throw new Error("no value");
+      });
+  }
+
+  var nfID = new Intl.NumberFormat("id-ID");
+  var nfUS = new Intl.NumberFormat("en-US", {maximumFractionDigits:0});
+
+  function fmtPct(v){ return (Math.round(v*100)/100).toLocaleString("id-ID") + "%"; }
+  function fmtUSD(v){
+    if(v >= 1e12) return "$" + (v/1e12).toFixed(2).replace(".",",") + " T";
+    if(v >= 1e9)  return "$" + (v/1e9).toFixed(2).replace(".",",") + " M";
+    return "$" + nfUS.format(v);
+  }
+  function fmtRupiah(v){ return "Rp " + nfID.format(Math.round(v)); }
+
+  function setText(id, txt){ var el = $(id); if(el) el.textContent = txt; }
+  function setHTML(id, html){ var el = $(id); if(el) el.innerHTML = html; }
+
+  function fill(id, html){ setHTML(id, html); }
+
+  // ---------- FX ----------
+  var fxPromise = fetchJSON(FX).then(function(d){
+    if(!d || !d.rates || !d.rates.IDR) throw new Error("no rate");
+    var rate = d.rates.IDR;
+    fill("fxValue", fmtRupiah(rate));
+    fill("fxInvValue", "$" + (1/rate).toFixed(8));
+    setText("fxTime", d.time_last_update_utc || "—");
+    if(d.time_last_update_unix){ $("fxTime").dataset.ts = String(d.time_last_update_unix*1000); }
+    else { delete $("fxTime").dataset.ts; }
+    $("fxTag").className = "tag ok"; setText("fxTag","live");
+    return {rate: rate, time: d.time_last_update_utc};
+  }).catch(function(){
+    fill("fxValue", fmtRupiah(FALLBACK.fx));
+    fill("fxInvValue", "$" + (1/FALLBACK.fx).toFixed(8));
+    setText("fxTime", "nilai cadangan (API tidak terjangkau)");
+    delete $("fxTime").dataset.ts;
+    $("fxTag").className = "tag err"; setText("fxTag","cache");
+    return {rate: FALLBACK.fx, time: "cache"};
+  });
+
+  // ---------- World Bank ----------
+  function bindSimple(key, indicator, valueId, yearId, formatter){
+    return wbLatest(indicator).then(function(r){
+      fill(valueId, formatter(r.value));
+      setText(yearId, r.year);
+      return r;
+    }).catch(function(){
+      fill(valueId, formatter(FALLBACK[key]));
+      setText(yearId, FALLBACK[key + "Year"] + " (cadangan)");
+      return {value: FALLBACK[key], year: FALLBACK[key + "Year"], fallback: true};
+    });
+  }
+
+  var gdpP = bindSimple("gdp","NY.GDP.MKTP.CD","gdpValue","gdpYear", fmtUSD);
+  var infP = bindSimple("inf","FP.CPI.TOTL.ZG","infValue","infYear", fmtPct);
+  var popP = bindSimple("pop","SP.POP.TOTL","popValue","popYear", function(v){ return nfID.format(v) + " <span class='unit'>jiwa</span>"; });
+  var unmP = bindSimple("unemp","SL.UEM.TOTL.ZS","unempValue","unempYear", fmtPct);
+  var povP = bindSimple("pov","SI.POV.NAHC","povValue","povYear", fmtPct);
+  var manP = bindSimple("man","NV.IND.MANF.ZS","manValue","manYear", fmtPct);
+  var expP = bindSimple("exp","NE.EXP.GNFS.ZS","expValue","expYear", fmtPct);
+  var fdiP = bindSimple("fdi","BX.KLT.DINV.CD.WD","fdiValue","fdiYear", fmtUSD);
+
+  // ---------- table + ticker ----------
+  Promise.all([fxPromise, gdpP, infP, popP, unmP, povP, manP, expP, fdiP]).then(function(res){
+    var fx = res[0], gdp = res[1], inf = res[2], pop = res[3], unm = res[4], pov = res[5], man = res[6], exp = res[7], fdi = res[8];
+
+    var rows = [
+      ["Kurs USD → IDR", fmtRupiah(fx.rate), "harian", "ExchangeRate-API"],
+      ["PDB nominal", fmtUSD(gdp.value), gdp.year, "World Bank"],
+      ["Inflasi (CPI)", fmtPct(inf.value), inf.year, "World Bank"],
+      ["Populasi", nfID.format(pop.value) + " jiwa", pop.year, "World Bank"],
+      ["Pengangguran", fmtPct(unm.value), unm.year, "World Bank"],
+      ["Kemiskinan nasional", fmtPct(pov.value), pov.year, "World Bank"],
+      ["Manufaktur / PDB", fmtPct(man.value), man.year, "World Bank"],
+      ["Ekspor / PDB", fmtPct(exp.value), exp.year, "World Bank"],
+      ["Investasi asing langsung", fmtUSD(fdi.value), fdi.year, "World Bank"]
+    ];
+    $("tableBody").innerHTML = rows.map(function(r){
+      return "<tr><td>" + r[0] + "</td><td class='num'>" + r[1] + "</td><td>" + r[2] + "</td><td><span class='src'>" + r[3] + "</span></td></tr>";
+    }).join("");
+
+    var anyFallback = [gdp,inf,pop,unm,pov,man,exp,fdi].some(function(x){ return x.fallback; });
+    var st = $("globalStatus");
+    if(anyFallback){ st.className = "tag warn"; st.textContent = "sebagian cadangan"; }
+    else { st.className = "tag ok"; st.textContent = "semua live"; }
+
+    var items = [
+      "USD/IDR <b>" + fmtRupiah(fx.rate) + "</b>",
+      "PDB <b>" + fmtUSD(gdp.value) + "</b>",
+      "Inflasi <b>" + fmtPct(inf.value) + "</b>",
+      "Populasi <b>" + nfID.format(pop.value) + "</b>",
+      "Pengangguran <b>" + fmtPct(unm.value) + "</b>",
+      "Kemiskinan <b>" + fmtPct(pov.value) + "</b>"
+    ];
+    var line = items.map(function(x){ return "<span>" + x + "</span>"; }).join("");
+    $("tickerTrack").innerHTML = line + line;
+
+    setText("lastRefresh", new Date().toLocaleString("id-ID", {dateStyle:"medium", timeStyle:"short"}));
+  });
+
+  // ---------- nav ----------
+  var toggle = $("navToggle"), nav = $("mainNav");
+  toggle.addEventListener("click", function(){
+    var open = nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  nav.addEventListener("click", function(e){
+    if(e.target.tagName === "A"){ nav.classList.remove("open"); toggle.setAttribute("aria-expanded","false"); }
+  });
+
+  setText("footYear", new Date().getFullYear());
+})();
+
+
+/* ---- */
+
+
+(function(){
+  function label(ms){
+    var h=Math.floor((Date.now()-ms)/3600000);
+    if(h<1) return "\u00b7 baru saja diperbarui";
+    if(h<24) return "\u00b7 diperbarui "+h+" jam lalu";
+    return "\u00b7 diperbarui "+Math.floor(h/24)+" hari lalu";
+  }
+  function run(){
+    var t=document.getElementById("fxTime");
+    if(!t) return;
+    var prev=t.querySelector(".fresh");
+    if(prev) prev.remove();
+    var ms = t.dataset.ts ? Number(t.dataset.ts) : Date.parse((t.textContent||"").trim());
+    if(isNaN(ms)||ms<=0) return;
+    var stale=(Date.now()-ms)>172800000;
+    var s=document.createElement("span");
+    s.className="fresh"+(stale?" stale":"");
+    s.setAttribute("role","status");
+    s.textContent=" "+label(ms);
+    t.appendChild(s);
+  }
+  var n=0,iv=setInterval(function(){ run(); if(++n>8) clearInterval(iv); },2500);
+  run();
+})();
+
+</script>
+<script>
+
+(function(){
+  "use strict";
+  var CITIES = [
+    {name:"Palangka Raya", region:"Kalimantan Tengah", lat:-2.21, lon:113.92},
+    {name:"Pekanbaru",     region:"Riau",              lat:0.51,  lon:101.45},
+    {name:"Pontianak",     region:"Kalimantan Barat",  lat:-0.02, lon:109.34},
+    {name:"Jambi",         region:"Jambi",             lat:-1.61, lon:103.61},
+    {name:"Banjarmasin",   region:"Kalimantan Selatan",lat:-3.32, lon:114.59},
+    {name:"Jakarta",       region:"DKI Jakarta",       lat:-6.21, lon:106.85}
+  ];
+
+  function level(v){
+    if (v == null) return {cls:"lv-mid", txt:"tidak tersedia"};
+    if (v <= 12) return {cls:"lv-good", txt:"baik"};
+    if (v <= 35) return {cls:"lv-mid",  txt:"sedang"};
+    if (v <= 55) return {cls:"lv-bad",  txt:"tidak sehat (sensitif)"};
+    if (v <= 150) return {cls:"lv-bad", txt:"tidak sehat"};
+    return {cls:"lv-verybad", txt:"berbahaya"};
+  }
+
+  function card(c, data){
+    var pm = data && data.pm2_5 != null ? data.pm2_5 : null;
+    var lv = level(pm);
+    var el = document.createElement("div");
+    el.className = "aq-card";
+    el.setAttribute("role","listitem");
+    el.innerHTML =
+      '<div class="aq-city">' + c.name + '</div>' +
+      '<div class="aq-region">' + c.region + '</div>' +
+      '<div class="aq-val">' + (pm != null ? pm.toFixed(1) : "—") +
+        '<span class="aq-unit">µg/m³</span></div>' +
+      '<div class="aq-label ' + lv.cls + '">' + lv.txt + '</div>';
+    return el;
+  }
+
+  function loadAir(){
+    var grid = document.getElementById("aqGrid");
+    if (!grid) return;
+    var done = 0, results = {};
+    CITIES.forEach(function(c){
+      var url = "https://air-quality-api.open-meteo.com/v1/air-quality" +
+                "?latitude=" + c.lat + "&longitude=" + c.lon +
+                "&current=pm2_5,pm10,us_aqi&timezone=Asia%2FJakarta";
+      var ctrl = new AbortController();
+      var t = setTimeout(function(){ ctrl.abort(); }, 12000);
+      fetch(url, {signal: ctrl.signal})
+        .then(function(r){ if(!r.ok) throw new Error("http "+r.status); return r.json(); })
+        .then(function(d){ results[c.name] = (d && d.current) || null; })
+        .catch(function(){ results[c.name] = null; })
+        .then(function(){
+          clearTimeout(t);
+          if (++done === CITIES.length) render(results);
+        });
+    });
+  }
+
+  function render(results){
+    var grid = document.getElementById("aqGrid");
+    if (!grid) return;
+    grid.textContent = "";
+    CITIES.forEach(function(c){ grid.appendChild(card(c, results[c.name])); });
+  }
+
+  var PROV = [
+    ["Kalimantan Barat", 38310.86],
+    ["Papua Selatan", 25838.53],
+    ["Nusa Tenggara Timur", 19565.16],
+    ["Nusa Tenggara Barat", 17406.46],
+    ["Riau", 15738.92],
+    ["Maluku", 14677.00],
+    ["Jawa Timur", 10835.28],
+    ["Kalimantan Timur", 8019.63],
+    ["Kalimantan Selatan", 7634.46],
+    ["Kepulauan Riau", 5760.90],
+    ["Kalimantan Tengah", 3657.00]
+  ];
+
+  function renderProv(){
+    var tb = document.getElementById("provBody");
+    if (!tb) return;
+    var max = PROV[0][1];
+    tb.textContent = "";
+    PROV.forEach(function(row, i){
+      var pct = Math.max(2, (row[1] / max) * 100);
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + (i+1) + "</td>" +
+        "<td>" + row[0] + "</td>" +
+        "<td>" + row[1].toLocaleString("id-ID", {minimumFractionDigits:2, maximumFractionDigits:2}) + "</td>" +
+        '<td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:' + pct.toFixed(1) + '%"></div></div></td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  renderProv();
+  loadAir();
+})();
+
+</script>
+</body>
+</html>
