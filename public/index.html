@@ -2,11 +2,20 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bangun Negeri: ekonomi, alam, dan karhutla Indonesia</title>
+<meta name="description" content="Angka ekonomi, alam, dan kebakaran hutan Indonesia, dengan tahun dan sumbernya. Diperbarui dari World Bank, ExchangeRate-API, dan Open-Meteo.">
+<meta name="theme-color" content="#FAF8F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141310" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Bangun Negeri: ekonomi, alam, dan karhutla Indonesia">
+<meta property="og:description" content="Angka ekonomi, alam, dan kebakaran hutan Indonesia, dengan tahun dan sumbernya.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="theme.css?v=1">
 <script>
 /* Path-mounted behind `tailscale serve`, which strips the /bangun-negeri prefix:
-   the backend cannot tell "/bangun-negeri" from "/bangun-negeri/", so a server-side
-   redirect is impossible. Without the trailing slash the browser resolves theme.css
-   and app.js against "/" and every asset 404s. Normalise here, before anything loads. */
+the backend cannot tell "/bangun-negeri" from "/bangun-negeri/", so a server-side
+redirect is impossible. Without the trailing slash the browser resolves theme.css
+and app.js against "/" and every asset 404s. Normalise here, before anything loads. */
 (function () {
   var p = location.pathname;
   if (p.charAt(p.length - 1) !== '/' && !/\.html?$/.test(p)) {
@@ -14,39 +23,31 @@
   }
 })();
 </script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bangun Negeri — Data Indonesia, satu halaman</title>
-<meta name="description" content="Ekonomi, alam, dan kebakaran hutan Indonesia dalam satu halaman: angka terbaru, sumbernya, dan batas datanya.">
-<meta name="theme-color" content="#faf6ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1a1714" media="(prefers-color-scheme: dark)">
-<meta property="og:title" content="Bangun Negeri — Data Indonesia">
-<meta property="og:description" content="Ekonomi, alam, dan karhutla Indonesia: angka terbaru, sumber, dan batas datanya.">
-<meta property="og:type" content="website">
-<link rel="stylesheet" href="theme.css?v=3">
 </head>
 <body>
 <a class="skip" href="#main">Lompat ke isi</a>
 
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="#intro">Bangun Negeri <span class="ver">v2.0</span></a>
+    <a class="brand" href="#intro">Bangun Negeri</a>
     <nav class="tabs" aria-label="Bagian halaman">
       <a href="#intro">Ringkasan</a>
-      <a href="#live">Live</a>
+      <a href="#live">Kurs hari ini</a>
       <a href="#struktur">Ekonomi</a>
       <a href="#alam">Alam</a>
       <a href="#udara">Udara</a>
       <a href="#karhutla">Karhutla</a>
+      <a href="#batas">Batas data</a>
       <a href="#tabel">Tabel</a>
       <a href="#sumber">Sumber</a>
     </nav>
     <div class="tools">
-      <span class="chip" id="globalStatus" role="status" aria-live="polite">memuat</span>
+      <span class="chip" id="globalStatus" role="status" aria-live="polite">memuat data</span>
       <button class="btn btn-icon" id="refreshBtn" type="button" aria-label="Muat ulang data">
-        <span aria-hidden="true">↻</span>
+        <span aria-hidden="true">&#8635;</span>
       </button>
       <button class="btn btn-icon theme-toggle" id="themeToggle" type="button" aria-pressed="false" aria-label="Mode gelap">
-        <span aria-hidden="true">◐</span><span class="theme-label">Gelap</span>
+        <span aria-hidden="true">&#9680;</span><span class="theme-label">Gelap</span>
       </button>
     </div>
   </div>
@@ -56,80 +57,76 @@
 
 <section id="intro" class="sec hero">
   <div class="wrap">
-    <p class="eyebrow">Data terbuka · diperbarui otomatis</p>
-    <h1>Indonesia dalam angka,<br>lengkap dengan sumbernya.</h1>
-    <p class="sub">Ekonomi, alam, dan kebakaran hutan dan lahan — satu halaman. Setiap angka membawa tahun, sumber, dan umurnya. Yang tidak diketahui ditulis sebagai tidak diketahui.</p>
+    <h1>Indonesia dalam angka,<br>dan dari mana angka itu datang.</h1>
+    <p class="sub">Ekonomi, alam, kualitas udara, dan kebakaran hutan 2026. Semuanya dari sumber publik yang bisa Anda buka sendiri. Angka yang tidak bisa dipertanggungjawabkan tidak ditampilkan.</p>
 
-    <div class="kpi-band reveal">
+    <div class="kpi-band">
       <div class="kpi">
-        <span class="kpi-label">PDB nominal</span>
-        <span class="kpi-num" data-rec="gdp" data-count="gdp" data-fmt="usd">—</span>
-        <span class="kpi-meta"><span data-year="gdp">—</span> · <a data-src="gdp" href="#sumber">World Bank</a></span>
+        <span class="kpi-label">Produk domestik bruto</span>
+        <span class="kpi-num" data-rec="gdp" data-fmt="usd">0</span>
+        <span class="kpi-meta"><span data-year="gdp">2025</span> &middot; <a data-src="gdp" href="#sumber">World Bank</a></span>
       </div>
       <div class="kpi">
         <span class="kpi-label">Penduduk</span>
-        <span class="kpi-num" data-rec="population" data-count="population" data-fmt="int">—</span>
-        <span class="kpi-meta"><span data-year="population">—</span> · <a data-src="population" href="#sumber">World Bank</a></span>
+        <span class="kpi-num" data-rec="population" data-fmt="int">0</span>
+        <span class="kpi-meta"><span data-year="population">2025</span> &middot; <a data-src="population" href="#sumber">World Bank</a></span>
       </div>
       <div class="kpi">
-        <span class="kpi-label">Kurs USD → IDR</span>
-        <span class="kpi-num" data-rec="fx_usdidr" data-fmt="rp">—</span>
-        <span class="kpi-meta"><span data-flag="fx_usdidr" class="chip">live</span> <span data-age="fx_usdidr"></span></span>
+        <span class="kpi-label">Kurs USD ke IDR</span>
+        <span class="kpi-num" data-rec="fx_usdidr" data-fmt="rp">0</span>
+        <span class="kpi-meta"><span class="chip" data-flag="fx_usdidr">memuat</span> <span data-age="fx_usdidr"></span></span>
       </div>
       <div class="kpi">
-        <span class="kpi-label">Inflasi YoY</span>
-        <span class="kpi-num" data-rec="inflation" data-fmt="pct">—</span>
-        <span class="kpi-meta"><span data-year="inflation">—</span> · <a data-src="inflation" href="#sumber">World Bank</a></span>
+        <span class="kpi-label">Inflasi tahunan</span>
+        <span class="kpi-num" data-rec="inflation" data-fmt="pct">0</span>
+        <span class="kpi-meta"><span data-year="inflation">2025</span> &middot; <a data-src="inflation" href="#sumber">World Bank</a></span>
       </div>
     </div>
 
-    <figure class="hero-media reveal">
-      <img src="assets/hero.jpg" alt="Hutan tropis Indonesia" width="1600" height="900" loading="eager" decoding="async">
-      <figcaption class="credit">Foto: lihat <a href="#sumber">kredit gambar</a></figcaption>
+    <figure class="hero-media">
+      <img src="assets/hero.jpg" alt="Hutan hujan di Borneo, dilihat dari udara" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async">
+      <figcaption class="credit">Foto: Dukeabruzzi, CC BY-SA 4.0, <a href="https://commons.wikimedia.org/wiki/File:Borneo_rainforest.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption>
     </figure>
 
-    <div class="caveat reveal">
-      <strong>Cara membaca halaman ini.</strong> Angka tahunan berasal dari World Bank dan tertinggal
-      sekitar satu tahun dari tahun berjalan — itu jeda publikasi, bukan angka basi. Angka live
-      (kurs, kualitas udara) ditarik langsung dari browser Anda dan diberi label umurnya. Angka
-      statis (alam, karhutla) diberi tahun dan sumbernya di tempat.
+    <div class="caveat">
+      <strong>Cara membaca halaman ini.</strong> Angka tahunan berasal dari World Bank dan terbit sekitar satu tahun setelah tahun berjalannya. Itu jeda publikasi, bukan angka basi. Angka live (kurs, kualitas udara) ditarik dari peramban Anda dan diberi umur. Angka statis (alam, karhutla) membawa tahun dan sumbernya di tempat.
     </div>
   </div>
 </section>
 
 <section id="live" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head">
       <span class="live-badge"><span class="pulse" aria-hidden="true"></span>Live</span>
-      <h2 class="sec">Yang bergerak hari ini</h2>
-      <p class="sub">Kurs dan konteks global. Ditarik real-time dari API terbuka, disimpan sebentar di browser Anda supaya halaman tidak kosong saat jaringan lambat.</p>
+      <h2 class="sec">Kurs hari ini</h2>
+      <p class="sub">Satu angka yang berubah setiap hari dan langsung terasa di harga barang impor, biaya sekolah di luar negeri, dan ongkos kirim dari luar.</p>
     </div>
 
     <div class="grid3">
-      <article class="panel live-badge reveal">
-        <div class="stat-label">Kurs USD → IDR</div>
-        <div class="stat-num" data-rec="fx_usdidr" data-fmt="rp">—</div>
-        <div class="src-note"><span class="chip" data-flag="fx_usdidr">live</span> <span data-age="fx_usdidr"></span></div>
+      <article class="panel">
+        <div class="stat-label">Kurs USD ke IDR</div>
+        <div class="stat-num" data-rec="fx_usdidr" data-fmt="rp">0</div>
+        <div class="src-note"><span class="chip" data-flag="fx_usdidr">memuat</span> <span data-age="fx_usdidr"></span></div>
       </article>
-      <article class="panel reveal">
-        <div class="stat-label">Kurs IDR → USD</div>
-        <div class="stat-num sub" data-rec="fx_idrusd">—</div>
-        <div class="src-note">1 rupiah dalam dolar AS · <a data-src="fx_idrusd" href="#sumber">ExchangeRate-API</a></div>
+      <article class="panel">
+        <div class="stat-label">Kebalikannya: 1 rupiah dalam dolar</div>
+        <div class="stat-num" data-rec="fx_idrusd" data-fmt="ratio">0</div>
+        <div class="src-note">Dihitung dari kurs yang sama &middot; <a data-src="fx_idrusd" href="#sumber">ExchangeRate-API</a></div>
       </article>
-      <article class="panel reveal">
-        <div class="stat-label">Pertumbuhan PDB</div>
-        <div class="stat-num" data-rec="gdp_growth" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="gdp_growth">—</span> · <a data-src="gdp_growth" href="#sumber">World Bank</a></div>
+      <article class="panel">
+        <div class="stat-label">Pertumbuhan ekonomi</div>
+        <div class="stat-num" data-rec="gdp_growth" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="gdp_growth">2025</span> &middot; <a data-src="gdp_growth" href="#sumber">World Bank</a></div>
       </article>
     </div>
 
-    <div class="chart-wrap reveal">
+    <div class="chart-wrap">
       <div class="chart-head">
         <h3>Pergerakan kurs</h3>
-        <p class="src-note">Riwayat singkat yang tersimpan di browser ini sejak Anda pertama membuka halaman.</p>
+        <p class="src-note">Riwayat tersimpan di peramban ini sejak Anda pertama membuka halaman. Tidak ada yang dikirim ke server.</p>
       </div>
       <div class="chart" id="fxChart" role="img" aria-label="Grafik pergerakan kurs USD ke IDR">
-        <div class="skeleton" style="height:120px"></div>
+        <div class="skeleton" style="height:140px"></div>
       </div>
       <div class="legend" id="fxLegend"></div>
     </div>
@@ -138,134 +135,131 @@
 
 <section id="struktur" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <h2 class="sec">Ekonomi &amp; masyarakat</h2>
-      <p class="sub">Gambaran jangka panjang: penduduk, tenaga kerja, kemiskinan, dan struktur ekonomi. Angka tahunan World Bank, dengan tahun datanya ditandai di tiap kartu.</p>
+    <div class="sec-head">
+      <h2 class="sec">Ekonomi dan masyarakat</h2>
+      <p class="sub">Angka jangka panjang dari World Bank. Tiap kartu menyebut tahun datanya, karena tahun terbaru yang tersedia untuk tiap indikator tidak selalu sama.</p>
     </div>
 
     <div class="grid3" id="structGrid">
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">PDB per kapita</div>
-        <div class="stat-num" data-rec="gdp_pc" data-fmt="usd">—</div>
-        <div class="src-note"><span data-year="gdp_pc">—</span> · <a data-src="gdp_pc" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="gdp_pc" data-fmt="usd">0</div>
+        <div class="src-note"><span data-year="gdp_pc">2025</span> &middot; <a data-src="gdp_pc" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">Pengangguran</div>
-        <div class="stat-num" data-rec="unemployment" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="unemployment">—</span> · <a data-src="unemployment" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="unemployment" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="unemployment">2025</span> &middot; <a data-src="unemployment" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">Kemiskinan nasional</div>
-        <div class="stat-num" data-rec="poverty" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="poverty">—</span> · <a data-src="poverty" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="poverty" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="poverty">2025</span> &middot; <a data-src="poverty" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
-        <div class="stat-label">Manufaktur / PDB</div>
-        <div class="stat-num" data-rec="manufacturing" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="manufacturing">—</span> · <a data-src="manufacturing" href="#sumber">World Bank</a></div>
+      <article class="panel">
+        <div class="stat-label">Manufaktur terhadap PDB</div>
+        <div class="stat-num" data-rec="manufacturing" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="manufacturing">2025</span> &middot; <a data-src="manufacturing" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
-        <div class="stat-label">Ekspor / PDB</div>
-        <div class="stat-num" data-rec="exports" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="exports">—</span> · <a data-src="exports" href="#sumber">World Bank</a></div>
+      <article class="panel">
+        <div class="stat-label">Ekspor terhadap PDB</div>
+        <div class="stat-num" data-rec="exports" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="exports">2025</span> &middot; <a data-src="exports" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">Investasi asing langsung</div>
-        <div class="stat-num sub" data-rec="fdi" data-fmt="usd">—</div>
-        <div class="src-note"><span data-year="fdi">—</span> · <a data-src="fdi" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="fdi" data-fmt="usd">0</div>
+        <div class="src-note"><span data-year="fdi">2025</span> &middot; <a data-src="fdi" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">Harapan hidup</div>
-        <div class="stat-num" data-rec="life_exp">—</div>
-        <div class="src-note"><span data-year="life_exp">—</span> · <a data-src="life_exp" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="life_exp" data-fmt="num1">0</div>
+        <div class="src-note"><span data-year="life_exp">2025</span> &middot; <a data-src="life_exp" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">Akses listrik</div>
-        <div class="stat-num" data-rec="electricity" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="electricity">—</span> · <a data-src="electricity" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="electricity" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="electricity">2025</span> &middot; <a data-src="electricity" href="#sumber">World Bank</a></div>
       </article>
-      <article class="panel reveal">
+      <article class="panel">
         <div class="stat-label">Pengguna internet</div>
-        <div class="stat-num" data-rec="internet" data-fmt="pct">—</div>
-        <div class="src-note"><span data-year="internet">—</span> · <a data-src="internet" href="#sumber">World Bank</a></div>
+        <div class="stat-num" data-rec="internet" data-fmt="pct">0</div>
+        <div class="src-note"><span data-year="internet">2025</span> &middot; <a data-src="internet" href="#sumber">World Bank</a></div>
       </article>
     </div>
 
-    <div class="caveat reveal">
-      <strong>Catatan:</strong> indikator tahunan berasal dari World Bank Open Data, yang
-      mempublikasikan angka dengan jeda beberapa bulan setelah tahun berjalan. Angka terbaru
-      yang tersedia ditampilkan beserta tahunnya — bukan proyeksi. Tiap kartu menandai tahun
-      datanya, dan kurs diperbarui tiap hari.
+    <div class="caveat">
+      <strong>Soal tahun.</strong> World Bank menerbitkan angka tahunan beberapa bulan setelah tahun itu berakhir, dan tiap indikator punya jeda sendiri. Yang ditampilkan adalah angka terbaru yang benar-benar ada, bukan proyeksi. Kalau sebuah angka masih tahun lalu, tahunnya tertulis di kartu itu.
     </div>
   </div>
 </section>
 
 <section id="alam" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head">
       <h2 class="sec">Alam Indonesia</h2>
-      <p class="sub">Hutan, laut, dan gambut yang menopang negara ini — beserta batas daya tampungnya.</p>
+      <p class="sub">Hutan, laut, dan gambut yang menopang negara ini, beserta batas daya tampungnya.</p>
     </div>
 
-    <div class="stat-row reveal">
+    <div class="stat-row">
       <div class="stat">
         <div class="stat-num">3,40<span class="stat-unit">juta ha</span></div>
-        <div class="stat-label">Mangrove — terluas di dunia</div>
+        <div class="stat-label">Mangrove, terluas di dunia</div>
       </div>
       <div class="stat">
-        <div class="stat-num">57</div>
+        <div class="stat-num">57<span class="stat-unit">kawasan</span></div>
         <div class="stat-label">Taman nasional</div>
       </div>
       <div class="stat">
-        <div class="stat-num">36,1<span class="stat-unit">juta ha</span></div>
-        <div class="stat-label">Total kawasan lindung</div>
+        <div class="stat-num">27<span class="stat-unit">juta ha</span></div>
+        <div class="stat-label">Kawasan lindung, 554 kawasan</div>
       </div>
       <div class="stat">
         <div class="stat-num">76<span class="stat-unit">%</span></div>
-        <div class="stat-label">Spesies karang dunia di Coral Triangle</div>
+        <div class="stat-label">Spesies karang dunia yang ada di Coral Triangle</div>
       </div>
       <div class="stat">
-        <div class="stat-num">170<span class="stat-unit">→ &lt;100</span></div>
-        <div class="stat-label">Tutupan hutan, juta ha (1900 → 2000)</div>
+        <div class="stat-num">170<span class="stat-unit">turun ke bawah 100</span></div>
+        <div class="stat-label">Tutupan hutan, juta ha, dari 1900 ke 2000</div>
       </div>
     </div>
 
     <div class="grid2">
-      <figure class="card-media reveal">
-        <img src="assets/mangrove.jpg" alt="Hutan mangrove di Indonesia" width="1200" height="800" loading="lazy" decoding="async">
-        <figcaption>Mangrove — penjaga garis pantai dan penyerap karbon.</figcaption>
+      <figure class="card-media">
+        <img src="assets/mangrove.jpg" alt="Akar mangrove di atas air di Benoa, Bali" width="1200" height="800" loading="lazy" decoding="async">
+        <figcaption>Mangrove menahan gelombang dan menyimpan karbon. Indonesia punya yang terluas di dunia.</figcaption>
       </figure>
-      <figure class="card-media reveal">
-        <img src="assets/reef.jpg" alt="Terumbu karang di Coral Triangle" width="1200" height="800" loading="lazy" decoding="async">
-        <figcaption>Coral Triangle — pusat keanekaragaman karang dunia.</figcaption>
+      <figure class="card-media">
+        <img src="assets/reef.jpg" alt="Terumbu karang berwarna di Raja Ampat" width="1200" height="800" loading="lazy" decoding="async">
+        <figcaption>Terumbu di Raja Ampat. Coral Triangle memuat 76 persen spesies karang dunia.</figcaption>
       </figure>
     </div>
 
-    <h3 class="reveal">Hutan: dari 170 juta hektare ke bawah 100</h3>
-    <p class="reveal">Pada sekitar tahun 1900 tutupan hutan Indonesia diperkirakan <strong>170 juta hektare</strong>. Pada akhir abad ke-20 angka itu tinggal <strong>di bawah 100 juta hektare</strong>. Deforestasi menguat sejak 1970-an dan terus berlanjut; pada 1950 hutan primer masih sekitar 145 juta ha dengan 14 juta ha hutan sekunder di sekitarnya.</p>
-    <p class="reveal">Kehilangan hutan primer tahunan sempat turun menjadi sekitar <strong>930.000 hektare pada 2016</strong>, tetapi tekanannya tidak hilang — sekitar <strong>3,3 juta hektare</strong> hutan telah berubah menjadi perkebunan kelapa sawit. Perkebunan, tambang, dan kolam ikan bersama-sama menyumbang sekitar 5% deforestasi nasional; sisanya datang dari pembukaan lahan dan kebakaran.</p>
+    <h3>Hutan: dari 170 juta hektare ke bawah 100</h3>
+    <p>Sekitar tahun 1900, tutupan hutan Indonesia diperkirakan <strong>170 juta hektare</strong>. Pada akhir abad ke-20, angkanya tinggal <strong>di bawah 100 juta hektare</strong>. Deforestasi menguat sejak 1970-an. Pada 1950 hutan primer masih sekitar <strong>145 juta hektare</strong>, dengan <strong>14 juta hektare</strong> hutan sekunder di sekitarnya.</p>
+    <p>Kehilangan hutan primer tahunan sempat turun ke sekitar <strong>930.000 hektare pada 2016</strong>. Tekanannya tidak hilang. Sekitar <strong>3,3 juta hektare</strong> hutan sudah berubah menjadi perkebunan kelapa sawit. Perkebunan, tambang, dan kolam ikan bersama-sama menyumbang sekitar <strong>5 persen</strong> deforestasi nasional. Sisanya dari pembukaan lahan dan kebakaran.</p>
 
     <div class="grid2">
-      <div class="panel reveal">
+      <div class="panel">
         <span class="alam-tag">Keanekaragaman</span>
-        <p>Indonesia adalah salah satu negara <em>megadiverse</em> dunia. Di Bird's Head Seascape, Papua, tercatat <strong>574 spesies karang</strong> — 95% dari total Coral Triangle dan 72% dari seluruh dunia. Satu lanskap kecil di timur Indonesia memuat hampir tiga perempat spesies karang bumi.</p>
+        <p>Indonesia salah satu negara megadiverse dunia. Di Bird's Head Seascape, Papua, tercatat <strong>574 spesies karang</strong>: 95 persen dari total Coral Triangle dan 72 persen dari seluruh dunia. Satu lanskap kecil di timur Indonesia memuat hampir tiga perempat spesies karang bumi.</p>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <span class="alam-tag">Kawasan lindung</span>
-        <p>Lebih dari <strong>500 kawasan lindung</strong> mencakup <strong>57 taman nasional</strong> dan sejumlah cagar alam serta suaka margasatwa, totalnya <strong>36,1 juta hektare</strong>. Sembilan taman nasional di antaranya berstatus warisan dunia. Cakupan ini naik dari 10% luas daratan pada era 1980-an.</p>
+        <p>Lebih dari <strong>500 kawasan lindung</strong> mencakup <strong>57 taman nasional</strong>, ditambah cagar alam dan suaka margasatwa, totalnya <strong>27 juta hektare</strong>. Sembilan taman nasional berstatus warisan dunia. Cakupan ini naik dari 10 persen luas daratan pada 1980-an.</p>
       </div>
     </div>
 
-    <h3 class="reveal">Laut: Coral Triangle dan mangrove terluas di dunia</h3>
-    <p class="reveal">Coral Triangle — "Amazonnya laut" — membentang <strong>5,7 juta kilometer persegi</strong> perairan dan memuat lebih dari <strong>76% spesies karang pembentuk terumbu</strong> dunia. Padang lamun di kawasan ini menutup sekitar <strong>58.550 km²</strong> dengan 21 spesies lamun.</p>
-    <p class="reveal">Indonesia juga memegang <strong>mangrove terluas di dunia: 3,40 juta hektare</strong> dari total global 15,9 juta ha (estimasi 2025). Asia menyumbang 6,10 juta ha, dan Indonesia sendiri lebih dari seperlima angka dunia.</p>
+    <h3>Laut: Coral Triangle dan mangrove terluas di dunia</h3>
+    <p>Coral Triangle, yang sering disebut Amazonnya laut, membentang <strong>5,7 juta kilometer persegi</strong> dan memuat lebih dari <strong>76 persen spesies karang pembentuk terumbu</strong> dunia. Padang lamun di kawasan ini menutup sekitar <strong>58.550 kilometer persegi</strong>, dengan 21 spesies lamun.</p>
+    <p>Indonesia juga memegang <strong>mangrove terluas di dunia: 3,40 juta hektare</strong> dari total global 15,9 juta hektare (estimasi 2025). Asia menyumbang 6,10 juta hektare, dan Indonesia sendiri lebih dari seperlima angka dunia.</p>
 
-    <h3 class="reveal">Gambut: simpanan karbon yang mudah terbakar</h3>
-    <p class="reveal">Indonesia memiliki lahan gambut tropis <strong>lebih luas dari negara mana pun</strong>. Gambut menyimpan karbon jauh lebih padat daripada hutan di atasnya, tetapi hanya selama tetap basah. Negara ini kehilangan lahan basah sekitar <strong>100.000 hektare per tahun</strong>.</p>
-    <p class="reveal">Sekali dikeringkan untuk perkebunan atau kanal, gambut berubah dari penyerap menjadi sumber emisi — dan bahan bakar. Inilah simpul yang menghubungkan hutan, kebakaran, dan kabut asap di halaman ini: lahan yang dikeringkan terbakar, dan yang terbakar melepas karbon yang tersimpan berabad-abad.</p>
+    <h3>Gambut: simpanan karbon yang mudah terbakar</h3>
+    <p>Indonesia punya lahan gambut tropis <strong>lebih luas dari negara mana pun</strong>. Gambut menyimpan karbon jauh lebih padat daripada hutan di atasnya, tetapi hanya selama tetap basah. Negara ini kehilangan lahan basah sekitar <strong>100.000 hektare per tahun</strong>.</p>
+    <p>Begitu dikeringkan untuk perkebunan atau kanal, gambut berubah dari penyerap menjadi sumber emisi, dan bahan bakar. Inilah simpul yang menghubungkan hutan, kebakaran, dan kabut asap di halaman ini: lahan yang dikeringkan terbakar, dan yang terbakar melepas karbon yang tersimpan berabad-abad.</p>
 
-    <div class="caveat reveal" id="alamCaveat">
-      <strong>Batas data.</strong> Angka tutupan hutan dan deforestasi di atas berasal dari rentang tahun yang lebar dan dari sumber berbeda; definisi "hutan" (kawasan hutan berdasarkan status hukum vs. luas yang benar-benar berhutan) berbeda-beda antarlembaga dan selisihnya bisa puluhan juta hektare. Angka mangrove 3,40 juta ha adalah estimasi 2025, bukan hasil sensus nasional. Jumlah spesies per kelompok taksonomi sengaja tidak dicantumkan karena sumber-sumber resmi saling berbeda. Untuk keputusan apa pun, rujuk ke publikasi KLHK/KLH terbaru, bukan halaman ini.
+    <div class="caveat" id="alamCaveat">
+      <strong>Batas data.</strong> Angka tutupan hutan dan deforestasi di atas berasal dari rentang tahun yang lebar dan dari sumber berbeda. Definisi "hutan" juga berbeda antarlembaga: kawasan hutan menurut status hukum, atau luas yang benar-benar berhutan. Selisihnya bisa puluhan juta hektare. Angka mangrove 3,40 juta hektare adalah estimasi 2025, bukan hasil sensus nasional. Jumlah spesies per kelompok taksonomi sengaja tidak dicantumkan karena sumber-sumber resmi saling berbeda. Untuk keputusan apa pun, rujuk ke publikasi KLHK/KLH terbaru, bukan halaman ini.
       <div class="src-note">Sumber: Wikipedia (Deforestation in Indonesia; Protected areas of Indonesia; Coral Triangle; Mangrove), data turunan KLHK/FAO/ADB. Diakses November 2026.</div>
     </div>
   </div>
@@ -273,75 +267,75 @@
 
 <section id="udara" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head">
       <span class="live-badge"><span class="pulse" aria-hidden="true"></span>Live</span>
-      <h2 class="sec">Kualitas udara terkini</h2>
-      <p class="sub">PM2.5 adalah partikel halus yang paling berbahaya saat karhutla — cukup kecil untuk masuk ke paru-paru dan aliran darah. Angka di bawah berasal dari model atmosfer yang menggabungkan citra satelit dan data permukaan, bukan dari sensor resmi pemerintah.</p>
+      <h2 class="sec">Kualitas udara sekarang</h2>
+      <p class="sub">PM2.5 adalah partikel halus yang paling berbahaya saat karhutla, cukup kecil untuk masuk ke paru-paru dan aliran darah. Angkanya dari model atmosfer yang menggabungkan citra satelit dan data permukaan, bukan dari sensor resmi pemerintah.</p>
     </div>
 
     <div class="aq-grid" id="aqGrid" role="list" aria-live="polite">
       <div class="aq-card lv-mid" id="card-aq_palangka" role="listitem">
         <div class="aq-city">Palangka Raya</div><div class="aq-region">Kalimantan Tengah</div>
-        <div class="aq-val">—<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
+        <div class="aq-val">&mdash;<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
       </div>
       <div class="aq-card lv-mid" id="card-aq_pekanbaru" role="listitem">
         <div class="aq-city">Pekanbaru</div><div class="aq-region">Riau</div>
-        <div class="aq-val">—<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
+        <div class="aq-val">&mdash;<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
       </div>
       <div class="aq-card lv-mid" id="card-aq_pontianak" role="listitem">
         <div class="aq-city">Pontianak</div><div class="aq-region">Kalimantan Barat</div>
-        <div class="aq-val">—<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
+        <div class="aq-val">&mdash;<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
       </div>
       <div class="aq-card lv-mid" id="card-aq_jambi" role="listitem">
         <div class="aq-city">Jambi</div><div class="aq-region">Jambi</div>
-        <div class="aq-val">—<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
+        <div class="aq-val">&mdash;<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
       </div>
       <div class="aq-card lv-mid" id="card-aq_banjarmasin" role="listitem">
         <div class="aq-city">Banjarmasin</div><div class="aq-region">Kalimantan Selatan</div>
-        <div class="aq-val">—<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
+        <div class="aq-val">&mdash;<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
       </div>
       <div class="aq-card lv-mid" id="card-aq_jakarta" role="listitem">
         <div class="aq-city">Jakarta</div><div class="aq-region">DKI Jakarta</div>
-        <div class="aq-val">—<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
+        <div class="aq-val">&mdash;<span class="aq-unit">µg/m³</span></div><div class="aq-label lv-mid">memuat</div>
       </div>
     </div>
 
-    <div class="legend reveal">
-      <span class="swatch lv-good"></span> baik (≤12)
-      <span class="swatch lv-mid"></span> sedang (≤35)
-      <span class="swatch lv-bad"></span> tidak sehat (&gt;35)
-      <span class="swatch lv-verybad"></span> berbahaya (&gt;150)
-      <span class="src-note">µg/m³ PM2.5 · Open-Meteo</span>
+    <div class="legend">
+      <span><span class="swatch lv-good"></span>baik (sampai 12)</span>
+      <span><span class="swatch lv-mid"></span>sedang (sampai 35)</span>
+      <span><span class="swatch lv-bad"></span>tidak sehat (di atas 35)</span>
+      <span><span class="swatch lv-verybad"></span>berbahaya (di atas 150)</span>
+      <span class="src-note">µg/m³ PM2.5 &middot; Open-Meteo</span>
     </div>
 
-    <p class="caveat reveal"><strong>Baca dengan hati-hati.</strong> Angka PM2.5 yang tinggi di Jakarta hampir selalu berasal dari polusi lalu lintas dan industri, bukan asap karhutla. Yang benar-benar menandai karhutla adalah lonjakan di kota gambut: Palangka Raya, Pekanbaru, Pontianak, Jambi, dan Banjarmasin. Satu angka tinggi tidak membuktikan apa pun tanpa melihat polanya.</p>
+    <p class="caveat"><strong>Baca dengan hati-hati.</strong> Angka PM2.5 tinggi di Jakarta hampir selalu datang dari lalu lintas dan industri, bukan dari asap karhutla. Yang menandai karhutla adalah lonjakan di kota gambut: Palangka Raya, Pekanbaru, Pontianak, Jambi, dan Banjarmasin. Satu angka tinggi tidak membuktikan apa pun tanpa melihat polanya.</p>
   </div>
 </section>
 
 <section id="karhutla" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head">
       <h2 class="sec">Karhutla 2026</h2>
       <p class="sub">Bukan bencana yang tiba-tiba. Polanya berulang: kemarau panjang, lahan gambut yang sudah dikeringkan, lalu api yang menyebar di bawah tanah dan bertahan berbulan-bulan.</p>
     </div>
 
     <div class="grid2">
-      <figure class="card-media reveal">
-        <img src="assets/fire.jpg" alt="Lahan gambut terbakar" width="1200" height="800" loading="lazy" decoding="async">
+      <figure class="card-media">
+        <img src="assets/fire.jpg" alt="Lahan gambut yang terbakar, tanahnya menghitam" width="1200" height="800" loading="lazy" decoding="async">
         <figcaption>Api di lahan gambut menjalar di bawah permukaan dan sulit dipadamkan.</figcaption>
       </figure>
-      <figure class="card-media reveal">
-        <img src="assets/haze.jpg" alt="Kabut asap di atas kota" width="1200" height="800" loading="lazy" decoding="async">
-        <figcaption>Asap menutup langit Sumatera dan Kalimantan pada Juli–Agustus 2026.</figcaption>
+      <figure class="card-media">
+        <img src="assets/haze.jpg" alt="Kabut asap menutup kota di Kalimantan" width="1200" height="800" loading="lazy" decoding="async">
+        <figcaption>Asap menutup langit Sumatera dan Kalimantan pada Juli dan Agustus 2026.</figcaption>
       </figure>
     </div>
 
-    <h3 class="reveal">Provinsi dengan luas terbakar terluas</h3>
-    <p class="reveal">Data Sipongi/Kementerian Kehutanan per 20 Agustus 2026. Kalimantan Barat menanggung beban terbesar — hampir dua kali provinsi berikutnya, dan sebagian besar lahannya adalah gambut.</p>
+    <h3>Provinsi dengan luas terbakar terluas</h3>
+    <p>Data Sipongi/Kementerian Kehutanan per 20 Agustus 2026. Kalimantan Barat menanggung beban terbesar, hampir dua kali provinsi berikutnya, dan sebagian besar lahannya gambut.</p>
 
-    <div class="table-wrap reveal">
+    <div class="table-wrap">
       <table>
-        <caption>Luas terbakar per provinsi, 2026 (hektar) · total 11 provinsi: <strong id="provSum">—</strong></caption>
+        <caption>Luas terbakar per provinsi, 2026, dalam hektar. Sebelas provinsi, total <strong id="provSum">&mdash;</strong>.</caption>
         <thead>
           <tr>
             <th scope="col" class="num">#</th>
@@ -352,68 +346,66 @@
           </tr>
         </thead>
         <tbody id="provBody">
-          <tr><td colspan="5">Memuat…</td></tr>
+          <tr><td colspan="5">Memuat data provinsi&hellip;</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="caveat reveal">Sepuluh provinsi ini menyumbang mayoritas luas terbakar nasional, tetapi totalnya <strong>tidak</strong> sama dengan angka nasional: pemerintah sendiri menerbitkan beberapa angka berbeda pada tanggal berbeda (lihat bagian Batas data).</p>
+    <p class="caveat">Sebelas provinsi ini menyumbang mayoritas luas terbakar nasional, tetapi totalnya <strong>tidak</strong> sama dengan angka nasional. Pemerintah sendiri menerbitkan beberapa angka berbeda pada tanggal berbeda. Lihat bagian <a href="#batas">Batas data</a>.</p>
 
-    <h3 class="reveal">Dampak yang sudah terukur</h3>
+    <h3>Dampak yang sudah terukur</h3>
     <div class="grid2">
-      <div class="panel alert reveal">
+      <div class="panel alert">
         <h3>Kesehatan</h3>
-        <p><strong>4 orang meninggal</strong> dan <strong>347 orang terluka</strong> akibat langsung karhutla, menurut Kementerian Kesehatan.</p>
-        <p>Jauh lebih besar lagi beban penyakit pernapasan: lonjakan ISPA di puskesmas daerah terdampak, terutama pada anak dan lansia. Angka pastinya tidak pernah dirilis lengkap.</p>
+        <p><strong>4 orang meninggal</strong> dan <strong>347 orang terluka</strong> akibat langsung karhutla, menurut Kementerian Kesehatan. Beban penyakit pernapasan jauh lebih besar: lonjakan ISPA di puskesmas daerah terdampak, terutama pada anak dan lansia. Angka pastinya tidak pernah dirilis lengkap.</p>
       </div>
-      <div class="panel warn reveal">
+      <div class="panel warn">
         <h3>Ekonomi</h3>
-        <p>CELIOS memperkirakan kerugian <strong>Rp39–123 triliun</strong> untuk Januari–Agustus 2026 — gabungan kerusakan ekonomi dan biaya kesehatan.</p>
-        <p>Rentangnya sangat lebar karena metode valuasi berbeda; angka ini estimasi lembaga independen, bukan angka resmi pemerintah.</p>
+        <p>CELIOS memperkirakan kerugian <strong>Rp39 sampai 123 triliun</strong> untuk Januari sampai Agustus 2026, gabungan kerusakan ekonomi dan biaya kesehatan. Rentangnya lebar karena metode valuasi berbeda. Ini estimasi lembaga independen, bukan angka resmi pemerintah.</p>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Pendidikan</h3>
         <p>Ratusan sekolah diliburkan di Sumatera dan Kalimantan saat indeks kualitas udara masuk kategori berbahaya. Setiap hari libur adalah hari belajar yang hilang, dan tidak ada mekanisme penggantian.</p>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Transportasi</h3>
-        <p>Jarak pandang turun drastis saat asap tebal, memaksa penundaan dan pembatalan penerbangan di bandara terdampak. Ini biaya yang langsung terasa, tapi jarang dihitung sebagai kerugian karhutla.</p>
+        <p>Jarak pandang turun drastis saat asap tebal, sehingga penerbangan di bandara terdampak ditunda atau dibatalkan. Biaya ini langsung terasa, tetapi jarang dihitung sebagai kerugian karhutla.</p>
       </div>
     </div>
 
-    <h3 class="reveal">Kronologi</h3>
-    <ul class="tl reveal">
-      <li><time>Januari–Juni 2026</time><p><strong>107.465 hektar terbakar</strong> — naik sekitar 110% dibanding periode yang sama 2023. El Niño sangat kuat memperpanjang musim kering.</p></li>
-      <li><time>Juli–Agustus 2026</time><p>Asap menutup langit Sumatera dan Kalimantan. <strong>18 Agustus</strong>, Menteri Kehutanan Raja Juli Antoni menyebut angka <strong>202 ribu hektar</strong>.</p></li>
-      <li><time>20 Agustus 2026</time><p>Sipongi merilis sebaran provinsi: <strong>Kalimantan Barat 38.310 ha</strong>, disusul Papua Selatan dan NTT.</p></li>
-      <li><time>22 Agustus 2026</time><p>Menteri Lingkungan Hidup Jumhur Hidayat menyebut <strong>~85 ribu hektar</strong> berada di kawasan konsesi, dengan <strong>335 perusahaan</strong> terindikasi memiliki titik api — lalu membantah pernyataannya sendiri beberapa hari kemudian.</p></li>
-      <li><time>September–Oktober 2026</time><p>WALHI merilis analisis: <strong>74% titik panas Kalimantan</strong> berada di lahan konsesi — 10.739 titik di HGU sawit, 7.880 di konsesi tambang, 6.905 di PBPH.</p></li>
-      <li><time>3 November 2026</time><p>Kemenhut mencatat <strong>189 titik panas</strong> nasional. Empat hari kemudian turun menjadi <strong>55 titik</strong>.</p></li>
+    <h3>Kronologi</h3>
+    <ul class="tl">
+      <li><time>Januari sampai Juni 2026</time><p><strong>107.465 hektare terbakar</strong>, naik sekitar 110 persen dibanding periode yang sama pada 2023. El Niño kuat memperpanjang musim kering.</p></li>
+      <li><time>Juli sampai Agustus 2026</time><p>Asap menutup langit Sumatera dan Kalimantan. Pada <strong>18 Agustus</strong>, Menteri Kehutanan Raja Juli Antoni menyebut angka <strong>202 ribu hektare</strong>.</p></li>
+      <li><time>20 Agustus 2026</time><p>Sipongi merilis sebaran provinsi: <strong>Kalimantan Barat 38.310 hektare</strong>, disusul Papua Selatan dan NTT.</p></li>
+      <li><time>22 Agustus 2026</time><p>Menteri Lingkungan Hidup Jumhur Hidayat menyebut sekitar <strong>85 ribu hektare</strong> berada di kawasan konsesi, dengan <strong>335 perusahaan</strong> terindikasi memiliki titik api. Beberapa hari kemudian ia membantah pernyataannya sendiri.</p></li>
+      <li><time>September sampai Oktober 2026</time><p>WALHI merilis analisis: <strong>74 persen titik panas Kalimantan</strong> berada di lahan konsesi, yaitu 10.739 titik di HGU sawit, 7.880 di konsesi tambang, dan 6.905 di PBPH.</p></li>
+      <li><time>3 November 2026</time><p>Kemenhut mencatat <strong>189 titik panas</strong> nasional. Empat hari kemudian angkanya turun menjadi <strong>55 titik</strong>.</p></li>
     </ul>
   </div>
 </section>
 
 <section id="batas" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head">
       <h2 class="sec">Batas data: yang tidak kita ketahui</h2>
-      <p class="sub">Halaman ini sengaja menampilkan bagian ini. Untuk karhutla, angka yang paling sering dikutip justru yang paling tidak sepakat — termasuk oleh pemerintah sendiri.</p>
+      <p class="sub">Bagian ini sengaja ada. Untuk karhutla, angka yang paling sering dikutip justru yang paling tidak sepakat, termasuk di antara instansi pemerintah sendiri.</p>
     </div>
     <div class="grid2">
-      <div class="panel alert reveal">
+      <div class="panel alert">
         <h3>Angka nasional tidak satu</h3>
-        <p>107.465 ha (Jan–Jun), 202 ribu ha (Menhut, 18 Agu), dan ~85 ribu ha di konsesi (MenLH, 22 Agu) tidak bisa dijumlahkan atau dibandingkan langsung — cakupan dan metodenya berbeda.</p>
+        <p>107.465 hektare (Januari sampai Juni), 202 ribu hektare (Menteri Kehutanan, 18 Agustus), dan sekitar 85 ribu hektare di konsesi (Menteri Lingkungan Hidup, 22 Agustus) tidak bisa dijumlahkan atau dibandingkan langsung. Cakupan dan metodenya berbeda.</p>
       </div>
-      <div class="panel warn reveal">
+      <div class="panel warn">
         <h3>Definisi hutan berbeda</h3>
-        <p>"Kawasan hutan" menurut status hukum dan "luas berhutan" menurut citra satelit bisa berselisih puluhan juta hektare. Angka tutupan hutan di halaman ini memakai definisi yang paling konservatif.</p>
+        <p>"Kawasan hutan" menurut status hukum dan "luas berhutan" menurut citra satelit bisa berselisih puluhan juta hektare. Halaman ini memakai definisi yang paling konservatif, dan menyebutnya.</p>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Kualitas udara bukan sensor resmi</h3>
-        <p>PM2.5 diambil dari model atmosfer Open-Meteo (gabungan satelit dan data permukaan), bukan dari stasiun pemantau pemerintah. Selisih dengan sensor lapangan bisa signifikan.</p>
+        <p>PM2.5 diambil dari model atmosfer Open-Meteo, gabungan satelit dan data permukaan, bukan dari stasiun pemantau pemerintah. Selisih dengan sensor lapangan bisa signifikan.</p>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Kerugian ekonomi adalah estimasi</h3>
-        <p>Rp39–123 triliun berasal dari CELIOS, lembaga independen, dengan metode valuasi yang tidak dirinci penuh. Rentang selebar itu sendiri adalah pesannya.</p>
+        <p>Rp39 sampai 123 triliun berasal dari CELIOS, lembaga independen, dengan metode valuasi yang tidak dirinci penuh. Rentang selebar itu sendiri adalah pesannya.</p>
       </div>
     </div>
   </div>
@@ -421,19 +413,19 @@
 
 <section id="tabel" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head">
       <h2 class="sec">Semua angka, satu tabel</h2>
       <p class="sub">Setiap indikator di halaman ini, lengkap dengan tahun data, sumber, dan status pengambilannya. Klik judul kolom untuk mengurutkan.</p>
     </div>
 
-    <div class="toolbar reveal">
+    <div class="toolbar">
       <button class="btn primary" id="csvBtn" type="button">Unduh CSV</button>
-      <span class="src-note">Terakhir diperbarui: <span id="lastRefresh">—</span></span>
+      <span class="src-note">Terakhir diperbarui: <span id="lastRefresh">&mdash;</span></span>
     </div>
 
-    <div class="table-wrap reveal">
+    <div class="table-wrap">
       <table>
-        <caption class="sr-only">Ringkasan seluruh indikator</caption>
+        <caption class="sr-only">Ringkasan seluruh indikator di halaman ini</caption>
         <thead>
           <tr>
             <th scope="col"><button class="th-sort" data-sort-table="label" type="button">Indikator</button></th>
@@ -444,7 +436,7 @@
           </tr>
         </thead>
         <tbody id="tableBody">
-          <tr><td colspan="5">Memuat data…</td></tr>
+          <tr><td colspan="5">Memuat data indikator&hellip;</td></tr>
         </tbody>
       </table>
     </div>
@@ -453,39 +445,40 @@
 
 <section id="sumber" class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <h2 class="sec">Sumber &amp; metodologi</h2>
-      <p class="sub">Semua data di halaman ini berasal dari API publik yang bisa diakses tanpa kunci API. Tidak ada server perantara yang menyimpan data Anda.</p>
+    <div class="sec-head">
+      <h2 class="sec">Sumber dan cara pengambilan</h2>
+      <p class="sub">Semua data berasal dari API publik yang bisa dibuka tanpa kunci. Tidak ada server perantara yang menyimpan data Anda.</p>
     </div>
 
     <div class="grid2">
-      <div class="panel reveal">
+      <div class="panel">
         <h3>World Bank Open Data</h3>
-        <p>PDB, PDB per kapita, pertumbuhan, inflasi, populasi, pengangguran, kemiskinan, manufaktur, ekspor, FDI, harapan hidup, akses listrik, pengguna internet, tutupan hutan, energi terbarukan.</p>
+        <p>PDB, PDB per kapita, pertumbuhan, inflasi, penduduk, pengangguran, kemiskinan, manufaktur, ekspor, investasi asing, harapan hidup, akses listrik, pengguna internet, tutupan hutan, energi terbarukan, emisi CO&#8322;.</p>
         <a href="https://api.worldbank.org/v2/country/IDN?format=json" target="_blank" rel="noopener">api.worldbank.org</a>
       </div>
-      <div class="panel reveal">
-        <h3>ExchangeRate-API (open access)</h3>
+      <div class="panel">
+        <h3>ExchangeRate-API</h3>
         <p>Kurs USD/IDR harian, diperbarui sekali sehari.</p>
         <a href="https://open.er-api.com/v6/latest/USD" target="_blank" rel="noopener">open.er-api.com</a>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Open-Meteo Air Quality</h3>
         <p>PM2.5, PM10, dan US AQI untuk enam kota, dari model atmosfer CAMS.</p>
         <a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener">open-meteo.com</a>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Cara pengambilan</h3>
-        <p>Halaman mengambil data langsung dari browser Anda. Hasilnya disimpan di <code>localStorage</code> selama 15 menit (data live) sampai 24 jam (data tahunan) supaya halaman tetap terbaca saat jaringan lambat.</p>
+        <p>Halaman mengambil data langsung dari peramban Anda. Hasilnya disimpan di localStorage selama 15 menit untuk data live dan 24 jam untuk data tahunan, supaya halaman tetap terbaca saat jaringan lambat.</p>
         <a href="#live">Lihat status live</a>
       </div>
-      <div class="panel reveal" id="credits">
+      <div class="panel" id="credits">
         <h3>Kredit gambar</h3>
-        <p class="src-note" id="creditList">Memuat kredit…</p>
+        <p class="src-note" id="creditList">Enam foto dari Wikimedia Commons. Penulis dan lisensinya tercantum di assets/CREDITS.md.</p>
       </div>
-      <div class="panel reveal">
+      <div class="panel">
         <h3>Batas dan koreksi</h3>
-        <p>Angka statis diperiksa terhadap sumbernya dan dicatat di <code>DATA-AUDIT.md</code>. Bila sebuah angka tidak bisa diverifikasi, angka itu dibuang — bukan ditebak. Lihat <a href="#batas">Batas data</a>.</p>
+        <p>Angka statis diperiksa terhadap sumbernya dan dicatat di DATA-AUDIT.md. Kalau sebuah angka tidak bisa diverifikasi, angka itu dibuang, bukan ditebak.</p>
+        <a href="#batas">Batas data</a>
       </div>
     </div>
   </div>
@@ -495,13 +488,13 @@
 
 <footer class="site">
   <div class="wrap">
-    <p><strong>Bangun Negeri</strong> — halaman data terbuka. Angka disertai tahun dan sumbernya; bila sumber resmi berbeda, perbedaan itu ditampilkan, bukan diratakan.</p>
-    <p class="src-note">Data live diambil langsung dari API publik di peramban Anda. Halaman ini tidak menyimpan data pengunjung dan tidak memakai cookie.</p>
+    <p><strong>Bangun Negeri</strong>, halaman data terbuka. Setiap angka membawa tahun dan sumbernya. Kalau dua sumber resmi berbeda, perbedaannya ditampilkan, bukan diratakan.</p>
+    <p class="src-note">Data live diambil langsung dari peramban Anda ke API publik. Halaman ini tidak memakai cookie dan tidak mengirim data pengunjung ke mana pun.</p>
   </div>
 </footer>
 
-<script src="data.js?v=3"></script>
-<script src="app.js?v=3"></script>
-<script src="chart.js?v=3"></script>
+<script src="data.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script src="chart.js?v=1"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* bangun-negeri v2 — data layer. Owner: wowo. Contract: v2/SPEC.md.
+/* bangun-negeri v3: data layer. Owner: wowo. Contract: v2/SPEC.md.
  * Plain ES5-safe, no deps, no build. Exposes window.BN.
  * Never throws to the caller: a failure leaves value:null + stale:true, or a
  * fallback with fallback:true. Every record carries source, url, year, fetchedAt.
@@ -302,7 +302,7 @@
 
   /* ---------- static, audited ---------- */
 
-  // [id, label, value, unit, display, year, source, url] — see DATA-AUDIT.md.
+  // [id, label, value, unit, display, year, source, url]. See DATA-AUDIT.md.
   var STATIC = [
     ["mangrove", "Hutan bakau", 3.40, "juta ha", "3,40 juta ha", 2025,
       "FAO (via Wikipedia, Mangrove)", "https://en.wikipedia.org/wiki/Mangrove"],

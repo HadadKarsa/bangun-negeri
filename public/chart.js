@@ -1,5 +1,5 @@
 
-/* bangun-negeri v2 — FX sparkline history (localStorage-backed) */
+/* bangun-negeri v3: FX sparkline history (localStorage-backed) */
 (function () {
   "use strict";
   var KEY = "bn:v2:fx_history";
@@ -43,7 +43,7 @@
     if (history.length < 2) {
       var p = document.createElement("div");
       p.className = "empty";
-      p.textContent = "Riwayat kurs akan muncul setelah halaman ini dibuka beberapa kali — data disimpan di browser Anda, bukan di server.";
+      p.textContent = "Riwayat kurs muncul setelah halaman ini dibuka beberapa kali. Datanya disimpan di peramban Anda, bukan di server.";
       host.appendChild(p);
       if (legend) legend.textContent = "";
       return;
