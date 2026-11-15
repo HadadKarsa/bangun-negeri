@@ -1332,3 +1332,14 @@ footer.site .src-note { color: var(--ink-3); }
     }
   }
 }
+
+/* ---------- 21. Tap targets (brenour) ----------
+   wiwi's browser audit at 320px measured nav links at 24x44 and the table sort
+   buttons at 4x44: both under the 44px minimum. The width came from padding
+   alone, which collapses when the label renders narrow. A floor is set here
+   instead, so the target survives any font and any label length. */
+nav.tabs a { min-width: 44px; justify-content: center; }
+.th-sort { min-width: 44px; padding-inline: 0 var(--s2); }
+@media (min-width: 720px) {
+  nav.tabs a { min-width: 0; justify-content: flex-start; }
+}
