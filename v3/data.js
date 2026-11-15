@@ -59,7 +59,7 @@
   } catch (e) { nfID = null; nfID0 = null; }
 
   function groupID(n, dec) {
-    if (!isNum(n)) return "\u2014";
+    if (!isNum(n)) return "tidak ada";
     if (nfID0) return (dec ? nfID : nfID0).format(n);
     var s = (dec ? n.toFixed(2) : String(Math.round(n))).split(".");
     s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -69,22 +69,22 @@
   var FMT = {
     idr: function (v) { return "Rp " + groupID(v, false); },
     usd: function (v) {
-      if (!isNum(v)) return "\u2014";
+      if (!isNum(v)) return "tidak ada";
       if (v >= 1e12) return "$" + groupID(v / 1e12, true) + " T";
       if (v >= 1e9) return "$" + groupID(v / 1e9, true) + " M";
       if (v >= 1e6) return "$" + groupID(v / 1e6, true) + " jt";
       return "$" + groupID(v, false);
     },
-    usdFull: function (v) { return isNum(v) ? "$" + groupID(v, false) : "\u2014"; },
-    pct: function (v) { return isNum(v) ? groupID(v, true) + "%" : "\u2014"; },
+    usdFull: function (v) { return isNum(v) ? "$" + groupID(v, false) : "tidak ada"; },
+    pct: function (v) { return isNum(v) ? groupID(v, true) + "%" : "tidak ada"; },
     num: function (v) { return groupID(v, false); },
     num1: function (v) { return groupID(v, true); },
-    mha: function (v) { return isNum(v) ? groupID(v, true) + " juta ha" : "\u2014"; },
-    ha: function (v) { return isNum(v) ? groupID(v, false) + " ha" : "\u2014"; },
-    ugm3: function (v) { return isNum(v) ? groupID(v, false) + " \u00b5g/m\u00b3" : "\u2014"; },
-    aqi: function (v) { return isNum(v) ? groupID(v, false) : "\u2014"; },
-    ratio: function (v) { return isNum(v) ? "$" + v.toFixed(8).replace(".", ",") : "\u2014"; },
-    text: function (v) { return v == null ? "\u2014" : String(v); }
+    mha: function (v) { return isNum(v) ? groupID(v, true) + " juta ha" : "tidak ada"; },
+    ha: function (v) { return isNum(v) ? groupID(v, false) + " ha" : "tidak ada"; },
+    ugm3: function (v) { return isNum(v) ? groupID(v, false) + " \u00b5g/m\u00b3" : "tidak ada"; },
+    aqi: function (v) { return isNum(v) ? groupID(v, false) : "tidak ada"; },
+    ratio: function (v) { return isNum(v) ? "$" + v.toFixed(8).replace(".", ",") : "tidak ada"; },
+    text: function (v) { return v == null ? "tidak ada" : String(v); }
   };
 
   /* ---------- network ---------- */
@@ -128,7 +128,7 @@
     var rec = {
       id: id, label: label,
       value: isNum(value) ? value : null,
-      display: display == null ? "\u2014" : display,
+      display: display == null ? "tidak ada" : display,
       unit: unit || "",
       year: year == null ? null : year,
       source: source || "",
@@ -168,7 +168,7 @@
     var hasFb = fbValue != null;
     var rec = makeRecord(id, label,
       hasFb ? fbValue : null,
-      hasFb ? formatter(fbValue) : "\u2014",
+      hasFb ? formatter(fbValue) : "tidak ada",
       unit, hasFb ? fbYear : null, source, url,
       extra || null);
     rec.stale = true;

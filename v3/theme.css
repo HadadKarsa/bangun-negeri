@@ -270,7 +270,13 @@ code {
   width: 100%;
   max-width: var(--wrap);
   margin-inline: auto;
-  padding-inline: var(--s4);
+  /* 12px gutters at the narrowest width: at 320px the header row needs those
+     8px more than the page needs a 16px margin */
+  padding-inline: var(--s3);
+}
+
+@media (min-width: 360px) {
+  .wrap { padding-inline: var(--s4); }
 }
 
 main { display: block; }
@@ -380,7 +386,7 @@ header.site {
 header.site > .wrap {
   display: flex;
   align-items: center;
-  gap: var(--s2);
+  gap: var(--s1) var(--s2);
   min-height: var(--nav-h);
   flex-wrap: wrap;
   padding-block: var(--s2);
@@ -414,12 +420,20 @@ nav.tabs {
   order: 3;
   flex: 1 1 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0 var(--s1);
   min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   border-top: 1px solid var(--line);
   padding-top: var(--s1);
+  /* the last visible link fades, so the strip announces that it continues */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
 }
+nav.tabs::-webkit-scrollbar { display: none; }
 
 nav.tabs a {
   position: relative;
@@ -464,7 +478,7 @@ nav.tabs a.active::after {
 .tools .chip {
   flex: 0 1 auto;
   min-width: 0;
-  max-width: 9ch;
+  max-width: 6.5ch;
 }
 
 /* status chip: a real state, in words */
@@ -1231,6 +1245,9 @@ footer.site .src-note { color: var(--ink-3); }
     border-top: 0;
     padding-top: 0;
     gap: 0;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
   nav.tabs a { padding: 0 var(--s2); }
   nav.tabs a.active::after { inset-inline: var(--s2); bottom: 6px; }

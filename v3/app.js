@@ -81,7 +81,7 @@
   function fmtFor(key, rec) {
     var f = window.BN && BN.fmt;
     if (f && f[key]) return f[key](rec.value);
-    return rec.display == null ? "\u2014" : rec.display;
+    return rec.display == null ? "tidak ada" : rec.display;
   }
 
   /* ---------- age label ---------- */
@@ -101,13 +101,13 @@
     qsa('[data-rec="' + id + '"]').forEach(function (n) {
       var key = n.getAttribute("data-fmt");
       var txt = key ? fmtFor(key, rec) : rec.display;
-      n.textContent = (txt == null || txt === "") ? "\u2014" : txt;
+      n.textContent = (txt == null || txt === "") ? "tidak ada" : txt;
       n.classList.toggle("is-stale", !!rec.stale && !rec.fallback);
       n.classList.toggle("is-fallback", !!rec.fallback);
     });
 
     qsa('[data-year="' + id + '"]').forEach(function (n) {
-      n.textContent = rec.year == null ? "\u2014" : String(rec.year);
+      n.textContent = rec.year == null ? "tidak ada" : String(rec.year);
     });
 
     qsa('[data-age="' + id + '"]').forEach(function (n) {
@@ -160,7 +160,7 @@
 
       var val = card.querySelector(".aq-val");
       if (val) {
-        val.textContent = (v == null ? "\u2014" : (BN.fmt.num1(v))) ;
+        val.textContent = (v == null ? "tidak ada" : (BN.fmt.num1(v))) ;
         var unit = doc.createElement("span");
         unit.className = "aq-unit";
         unit.textContent = "µg/m³";
@@ -257,7 +257,7 @@
 
     var rows = TABLE_IDS.map(function (id) {
       return BN.records[id] || {
-        id: id, label: id, display: "\u2014", year: null, source: "\u2014",
+        id: id, label: id, display: "tidak ada", year: null, source: "tidak ada",
         url: "", stale: true, fallback: true, value: null
       };
     });
@@ -276,17 +276,17 @@
       var tr = doc.createElement("tr");
       var c1 = doc.createElement("td"); c1.textContent = r.label;
       var c2 = doc.createElement("td"); c2.className = "num";
-      c2.textContent = (r.display == null || r.display === "") ? "\u2014" : r.display;
+      c2.textContent = (r.display == null || r.display === "") ? "tidak ada" : r.display;
       var c3 = doc.createElement("td"); c3.className = "num";
-      c3.textContent = r.year == null ? "\u2014" : String(r.year);
+      c3.textContent = r.year == null ? "tidak ada" : String(r.year);
       var c4 = doc.createElement("td");
       if (r.url) {
         var a = doc.createElement("a");
         a.href = r.url; a.target = "_blank"; a.rel = "noopener";
-        a.textContent = r.source || "\u2014";
+        a.textContent = r.source || "tidak ada";
         c4.appendChild(a);
       } else {
-        c4.textContent = r.source || "\u2014";
+        c4.textContent = r.source || "tidak ada";
       }
       var c5 = doc.createElement("td");
       var chip = doc.createElement("span");
@@ -355,7 +355,7 @@
     if (lr) {
       lr.textContent = s.lastFetch
         ? new Date(s.lastFetch).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" })
-        : "\u2014";
+        : "tidak ada";
     }
   }
 
