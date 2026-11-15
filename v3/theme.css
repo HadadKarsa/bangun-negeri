@@ -101,7 +101,8 @@
 
   /* type */
   --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino,
-           Georgia, "Times New Roman", serif;
+           Georgia, "Noto Serif", "DejaVu Serif", "Liberation Serif",
+           "Times New Roman", "Droid Serif", serif;
   --sans:  ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
            "Helvetica Neue", Arial, sans-serif;
   --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -379,7 +380,7 @@ header.site {
 header.site > .wrap {
   display: flex;
   align-items: center;
-  gap: var(--s3);
+  gap: var(--s2);
   min-height: var(--nav-h);
   flex-wrap: wrap;
   padding-block: var(--s2);
@@ -392,7 +393,7 @@ header.site > .wrap {
   min-height: 44px;
   padding-block: var(--s2);
   font-family: var(--serif);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -413,22 +414,20 @@ nav.tabs {
   order: 3;
   flex: 1 1 100%;
   display: flex;
-  gap: var(--s1);
+  flex-wrap: wrap;
+  gap: 0 var(--s1);
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
   border-top: 1px solid var(--line);
-  padding-top: var(--s2);
+  padding-top: var(--s1);
 }
-nav.tabs::-webkit-scrollbar { display: none; }
 
 nav.tabs a {
   position: relative;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 var(--s3);
+  padding: 0 var(--s2);
   font-size: var(--t-sm);
   font-weight: 500;
   color: var(--ink-2);
@@ -457,12 +456,16 @@ nav.tabs a.active::after {
   align-items: center;
   gap: var(--s2);
   margin-left: auto;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
 }
 /* the status chip is a flex item here, so it may shrink and ellipsis rather
    than push a 320px header wider than the screen */
-.tools .chip { flex: 0 1 auto; min-width: 0; }
+.tools .chip {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 9ch;
+}
 
 /* status chip: a real state, in words */
 .chip {
@@ -557,7 +560,6 @@ nav.tabs a.active::after {
   color: var(--ink);
   max-width: 22ch;
 }
-.hero h1 br { display: none; }
 
 .hero .sub {
   margin-top: var(--s4);
@@ -929,8 +931,10 @@ th.num, td.num {
   align-items: center;
   gap: var(--s1);
   min-height: 44px;
+  min-width: 44px;
   margin-block: calc(var(--s2) * -1);
-  padding: 0;
+  padding: 0 var(--s1) 0 0;
+  white-space: nowrap;
   font: inherit;
   font-size: inherit;
   font-weight: inherit;
@@ -1173,7 +1177,6 @@ footer.site .src-note { color: var(--ink-3); }
   section.sec { padding-block: var(--s8); }
 
   .hero { padding-top: var(--s7); }
-  .hero h1 br { display: inline; }
 
   .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1224,10 +1227,10 @@ footer.site .src-note { color: var(--ink-3); }
   nav.tabs {
     order: 0;
     flex: 1 1 auto;
-    overflow: visible;
+    flex-wrap: nowrap;
     border-top: 0;
     padding-top: 0;
-    gap: var(--s1);
+    gap: 0;
   }
   nav.tabs a { padding: 0 var(--s2); }
   nav.tabs a.active::after { inset-inline: var(--s2); bottom: 6px; }
